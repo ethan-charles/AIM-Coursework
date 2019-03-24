@@ -1,0 +1,15 @@
+NAME : square
+COMMENT : square tsp by warren g. jackson
+TYPE : TSP
+DIMENSION : 8
+EDGE_WEIGHT_TYPE : EUC_2D
+NODE_COORD_SECTION
+1 0 0
+2 5 0
+3 10 0
+4 10 5
+5 10 10
+6 5 10
+7 0 10
+8 0 5
+EOF
