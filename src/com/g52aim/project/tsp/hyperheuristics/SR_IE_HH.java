@@ -54,7 +54,7 @@ public class SR_IE_HH extends HyperHeuristic {
 		for(int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
 			routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
 		}
-		SolutionPrinter.printSolution(routeLocations);
+		// SolutionPrinter.printSolution(routeLocations);
 	}
 
 	@Override

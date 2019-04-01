@@ -4,47 +4,59 @@ import java.util.Random;
 
 import com.g52aim.project.tsp.interfaces.HeuristicInterface;
 import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
+import com.g52aim.project.tsp.solution.TSPSolution;
 
 
 /**
- * 
  * @author Warren G. Jackson
  * Performs adjacent swap, returning the first solution with strict improvement
- *
  */
 public class DavissHillClimbing extends HeuristicOperators implements HeuristicInterface {
-	
-	public DavissHillClimbing(Random random) {
 
-		super(random);
-	}
+    public DavissHillClimbing(Random random) {
 
-	@Override
-	public double apply(TSPSolutionInterface solution, double dos, double iom) {
+        super(random);
+    }
 
-		// TODO implement Davis's Hill Climbing using adjacent swaps
-		return -1;
-	}
+    @Override
+    public double apply(TSPSolutionInterface solution, double dos, double iom) {
 
-	/*
-	 * TODO update the methods below to return the correct boolean value.
-	 */
+        // TODO implement Davis's Hill Climbing using adjacent swaps
+        int searchTimes = getIncrementalTimes(dos);
+        int mutationTimes = getIncrementalTimes(iom);
+        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
 
-	@Override
-	public boolean isCrossover() {
+        for (int i = 0; i < searchTimes; i++) {
+            TSPSolutionInterface tempSolution = solution.clone();
+            double currentFitness = tempSolution.getObjectiveFunctionValue();
 
-		return false;
-	}
 
-	@Override
-	public boolean usesIntensityOfMutation() {
+            // perform adjacent swap
 
-		return false;
-	}
 
-	@Override
-	public boolean usesDepthOfSearch() {
+        }
+        return -1;
+    }
 
-		return false;
-	}
+    /*
+     * TODO update the methods below to return the correct boolean value.
+     */
+
+    @Override
+    public boolean isCrossover() {
+
+        return false;
+    }
+
+    @Override
+    public boolean usesIntensityOfMutation() {
+
+        return false;
+    }
+
+    @Override
+    public boolean usesDepthOfSearch() {
+
+        return false;
+    }
 }

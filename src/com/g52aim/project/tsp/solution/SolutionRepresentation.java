@@ -10,37 +10,41 @@ import com.g52aim.project.tsp.interfaces.SolutionRepresentationInterface;
  */
 public class SolutionRepresentation implements SolutionRepresentationInterface {
 
-	
+	int [] representation;
+
 	public SolutionRepresentation(int[] representation) {
 		
 		// TODO
+		this.representation = representation;
 	}
 	
 	@Override
 	public int[] getSolutionRepresentation() {
 
 		// TODO
-		return null;
+		return this.representation;
 	}
 
 	@Override
 	public void setSolutionRepresentation(int[] solution) {
 		
 		// TODO
+		this.representation = solution;
 	}
 
 	@Override
 	public int getNumberOfCities() {
 
 		// TODO
-		return -1;
+		return representation.length;
 	}
 
 	@Override
 	public SolutionRepresentationInterface clone() {
 		
 		// TODO - NOTE clone Object, not copy of Object reference!
-		return null;
+		int[] newRepresentation = (int[])this.representation.clone();
+		return new SolutionRepresentation(this.representation);
 	}
 
 }

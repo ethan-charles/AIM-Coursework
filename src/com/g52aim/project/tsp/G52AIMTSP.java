@@ -3,226 +3,304 @@ package com.g52aim.project.tsp;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import AbstractClasses.HyperHeuristic;
-import com.g52aim.project.tsp.heuristics.AdjacentSwap;
-import com.g52aim.project.tsp.heuristics.DavissHillClimbing;
-import com.g52aim.project.tsp.heuristics.NextDescent;
-import com.g52aim.project.tsp.heuristics.PMX;
-import com.g52aim.project.tsp.heuristics.Reinsertion;
-import com.g52aim.project.tsp.heuristics.TwoOpt;
+import com.g52aim.project.tsp.heuristics.*;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
 import com.g52aim.project.tsp.instance.InitialisationMode;
 import com.g52aim.project.tsp.instance.Location;
 import com.g52aim.project.tsp.instance.reader.TSPInstanceReader;
-import com.g52aim.project.tsp.interfaces.HeuristicInterface;
-import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
-import com.g52aim.project.tsp.interfaces.TSPInstanceInterface;
-import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
-import com.g52aim.project.tsp.interfaces.Visualisable;
-import com.g52aim.project.tsp.interfaces.XOHeuristicInterface;
+import com.g52aim.project.tsp.interfaces.*;
 
 import AbstractClasses.ProblemDomain;
+import com.g52aim.project.tsp.solution.TSPSolution;
 
 public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
-	private String[] instanceFiles = {
-		"d1291", "d18512", "dj38", "usa13509", "qa194", "ch71009"
-	};
-	
-	private TSPSolutionInterface[] solutions;
-	
-	public TSPSolutionInterface bestSolution;
-	
-	public TSPInstanceInterface instance;
-	
-	private HeuristicInterface[] heuristics;
-	
-	ObjectiveFunctionInterface f = null;
-	
-	public G52AIMTSP(long seed) {
+    private String[] instanceFiles = {
+            "d1291", "d18512", "dj38", "usa13509", "qa194", "ch71009"
+    };
 
-		super(seed);
-		
-		// TODO - set default memory size and create the array of low-level heuristics
-	}
-	
-	public TSPSolutionInterface getSolution(int index) {
-		
-		// TODO 
-		return null;
-	}
-	
-	public TSPSolutionInterface getBestSolution() {
-		
-		// TODO 
-		return null;
-	}
+    private TSPSolutionInterface[] solutions;
 
-	@Override
-	public double applyHeuristic(int hIndex, int currentIndex, int candidateIndex) {
-		
-		// TODO - apply heuristic and return the objective value of the candidate solution
-		return 0.0d;
-	}
+    public TSPSolutionInterface bestSolution;
 
-	@Override
-	public double applyHeuristic(int hIndex, int parent1Index, int parent2Index, int candidateIndex) {
-		
-		// TODO - apply heuristic and return the objective value of the candidate solution
-		return 0.0d;
-	}
+    public TSPInstanceInterface instance;
 
-	@Override
-	public String bestSolutionToString() {
-		
-		// TODO
-		return null;
-	}
+    private HeuristicInterface[] heuristics;
 
-	@Override
-	public boolean compareSolutions(int a, int b) {
+    int best_solution_index = 0;
+    double best_solution_value = Double.POSITIVE_INFINITY;
 
-		// TODO
-		return false;
-	}
+    ObjectiveFunctionInterface f = null;
 
-	@Override
-	public void copySolution(int a, int b) {
+    public G52AIMTSP(long seed) {
 
-		// TODO - BEWARE this should copy the solution, not the reference to it!
-		//			That is, that if we apply a heuristic to the solution in index 'b',
-		//			then it does not modify the solution in index 'a' or vice-versa.
-	}
+        super(seed);
 
-	@Override
-	public double getBestSolutionValue() {
+        // CHECK - set default memory size and create the array of low-level heuristics
 
-		// TODO
-		return 0.0d;
-	}
-	
-	@Override
-	public double getFunctionValue(int index) {
-		
-		// TODO
-		return 0.0d;
-	}
+        // set solutions array to default size of 2
+        this.solutions = new TSPSolution[2];
+        // initialise array of low-level heuristics
+        heuristics = new HeuristicInterface[]{new AdjacentSwap(rng), new TwoOpt(rng), new Reinsertion(rng), new NextDescent(rng), new DavissHillClimbing(rng),
+                new OX(rng), new PMX(rng),
+        };
+    }
 
-	// TODO
-	@Override
-	public int[] getHeuristicsOfType(HeuristicType type) {
-		
-		// TODO
-		return null;
-	}
+    public TSPSolutionInterface getSolution(int index) {
 
-	@Override
-	public int[] getHeuristicsThatUseDepthOfSearch() {
-		
-		// TODO
-		return null;
-	}
+        // CHECK
+        return this.solutions[index];
+    }
 
-	@Override
-	public int[] getHeuristicsThatUseIntensityOfMutation() {
-		
-		// TODO
-		return null;
-	}
+    public TSPSolutionInterface getBestSolution() {
 
-	@Override
-	public int getNumberOfHeuristics() {
+        // CHECK
+        return this.solutions[this.best_solution_index];
+    }
 
-		// TODO - has to be hard-coded due to the design of the HyFlex framework
-		return -1;
-	}
+    @Override
+    public double applyHeuristic(int hIndex, int currentIndex, int candidateIndex) {
 
-	@Override
-	public int getNumberOfInstances() {
+        // CHECK - apply heuristic and return the objective value of the candidate solution
+        double dos = rng.nextDouble();
+        double iom = rng.nextDouble();
+        // get a copy
+        TSPSolutionInterface solutionCopy = solutions[currentIndex].clone();
+        // applying heuristic on copy
+        double objectiveValue = heuristics[hIndex].apply(solutionCopy, dos, iom);
+        // places the resulting solution at position candidateIndex
+        solutions[candidateIndex] = solutionCopy;
+        return objectiveValue;
+    }
 
-		// TODO
-		return -1;
-	}
+    @Override
+    public double applyHeuristic(int hIndex, int parent1Index, int parent2Index, int candidateIndex) {
 
-	@Override
-	public void initialiseSolution(int index) {
+        // CHECK - apply heuristic and return the objective value of the candidate solution
+        double dos = rng.nextDouble();
+        double iom = rng.nextDouble();
+        double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
 
-		// TODO - make sure that you also update the best solution!
-	}
+        return objectiveValue;
+    }
 
-	@Override
-	public void loadInstance(int instanceId) {
+    @Override
+    public String bestSolutionToString() {
 
-		String SEP = FileSystems.getDefault().getSeparator();
-		String instanceName = "instances" + SEP + "tsp" + SEP + instanceFiles [instanceId] + ".tsp";
+        // CHECK
+        return solutionToString(this.best_solution_index);
+    }
 
-		// TODO create instance reader and problem instance
-		// ...
+    @Override
+    public boolean compareSolutions(int a, int b) {
 
-		// TODO set the objective function in each of the heuristics
-		// ...
-	}
+        // CHECK
+        int[] firstSolutionRepresentation = solutions[a].getSolutionRepresentation().getSolutionRepresentation();
+        int[] secondSolutionRepresentation = solutions[b].getSolutionRepresentation().getSolutionRepresentation();
 
-	@Override
-	public void setMemorySize(int size) {
+        return Arrays.equals(firstSolutionRepresentation, secondSolutionRepresentation);
+    }
 
-		// TODO
-	}
+    @Override
+    public void copySolution(int a, int b) {
 
-	@Override
-	public String solutionToString(int index) {
+        // CHECK - BEWARE this should copy the solution, not the reference to it!
+        //			That is, that if we apply a heuristic to the solution in index 'b',
+        //			then it does not modify the solution in index 'a' or vice-versa.
+        solutions[b] = solutions[a].clone();
+    }
 
-		// TODO
-		return null;
-	}
+    @Override
+    public double getBestSolutionValue() {
 
-	@Override
-	public String toString() {
+        // CHECK
+        return this.best_solution_value;
+    }
 
-		// TODO change 'PSY...' to be your username
-		return "PSY...'s G52AIM TSP";
-	}
-	
-	private void updateBestSolution(int index) {
-		
-		// TODO
-	}
-	
-	@Override
-	public TSPInstanceInterface getLoadedInstance() {
+    @Override
+    public double getFunctionValue(int index) {
 
-		return this.instance;
-	}
+        // CHECK
+        return getSolution(index).getObjectiveFunctionValue();
+    }
 
-	@Override
-	public Location[] getRouteOrderedByLocations() {
+    @Override
+    public int[] getHeuristicsOfType(HeuristicType type) {
 
-		int[] city_ids = getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
-		Location[] route = Arrays.stream(city_ids).boxed().map(getLoadedInstance()::getLocationForCity).toArray(Location[]::new);
-		return route;
-	}
+        // TODO
 
-	public static void main(String [] args) {
-		
-		long seed = 527893l;
-		long timeLimit = 10_000;
-		G52AIMTSP tsp = new G52AIMTSP(seed);
-		HyperHeuristic hh = new SR_IE_HH(seed);
-		tsp.loadInstance( 0 );
-		hh.setTimeLimit(timeLimit);
-		hh.loadProblemDomain(tsp);
-		hh.run();
-		
-		double best = hh.getBestSolutionValue();
-		System.out.println(best);
-		
-		// TODO you will need to populate this based on your representation!
-		List<Location> routeLocations = new ArrayList<>();
-		SolutionPrinter.printSolution(routeLocations);
-	}
+        return null;
+    }
+
+    @Override
+    public int[] getHeuristicsThatUseDepthOfSearch() {
+
+        // CHECK
+        int[] heuristicArray = new int[0];
+        for (int i = 0; i < heuristics.length; i++) {
+            if (heuristics[i].usesDepthOfSearch()) {
+                int[] temp = new int[heuristicArray.length + 1];
+                System.arraycopy(heuristicArray, 0, temp, 0, heuristicArray.length);
+                temp[heuristicArray.length + 1] = i;
+                heuristicArray = temp;
+            }
+        }
+        return heuristicArray;
+    }
+
+    @Override
+    public int[] getHeuristicsThatUseIntensityOfMutation() {
+
+        // CHECK
+        int[] heuristicArray = new int[0];
+        for (int i = 0; i < heuristics.length; i++) {
+            if (heuristics[i].usesIntensityOfMutation()) {
+                int[] temp = new int[heuristicArray.length + 1];
+                System.arraycopy(heuristicArray, 0, temp, 0, heuristicArray.length);
+                temp[heuristicArray.length + 1] = i;
+                heuristicArray = temp;
+            }
+        }
+        return heuristicArray;
+    }
+
+    @Override
+    public int getNumberOfHeuristics() {
+
+        // CHECK - has to be hard-coded due to the design of the HyFlex framework
+        return heuristics.length;
+    }
+
+    @Override
+    public int getNumberOfInstances() {
+
+        // CHECK
+        return instanceFiles.length;
+    }
+
+    @Override
+    public void initialiseSolution(int index) {
+
+        // CHECK - make sure that you also update the best solution!
+        solutions[index] = instance.createSolution(InitialisationMode.RANDOM);
+        double currentFitness = getFunctionValue(index);
+        if (currentFitness < this.best_solution_value) {
+            this.updateBestSolution(index);
+        }
+    }
+
+    @Override
+    public void loadInstance(int instanceId) {
+
+        String SEP = FileSystems.getDefault().getSeparator();
+        String instanceName = "instances" + SEP + "tsp" + SEP + instanceFiles[instanceId] + ".tsp";
+
+        // CHECK create instance reader and problem instance
+        // ...
+        TSPInstanceReader reader = new TSPInstanceReader();
+        instance = reader.readTSPInstance(Paths.get(instanceName), rng);
+
+        // CHECK set the objective function in each of the heuristics
+        // ...
+        for (int i = 0; i < heuristics.length; i++) {
+            heuristics[i].setObjectiveFunction(instance.getTSPObjectiveFunction());
+        }
+    }
+
+    @Override
+    public void setMemorySize(int size) {
+        // CHECK
+        TSPSolutionInterface[] tempSolutions = new TSPSolution[size];
+        // never set new memory size if there's no current solution or the new size < 2
+        if (this.solutions != null && size >= 2) {
+            int i = 0;
+            // to prevent index out of bound
+            // stop when reach the shorter array size
+            if (tempSolutions.length <= this.solutions.length) {
+                for (i = 0; i < tempSolutions.length; i++) {
+                    tempSolutions[i] = solutions[i];
+                }
+            } else {
+                for (i = 0; i < this.solutions.length; i++) {
+                    tempSolutions[i] = solutions[i];
+                }
+            }
+        }
+        this.solutions = tempSolutions;
+    }
+
+    @Override
+    public String solutionToString(int index) {
+
+        // CHECK
+
+        StringBuilder builder = new StringBuilder();
+        TSPSolutionInterface solution = solutions[index];
+        double cost = solution.getObjectiveFunctionValue();
+        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
+
+        builder.append("Cost = " + cost + "\n");
+        for (int i = 0; i < solutionRepresentation.length; ++i) {
+            builder.append(" " + solutionRepresentation[i]);
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String toString() {
+
+        // CHECK change 'PSY...' to be your username
+        return "PSYJHC's G52AIM TSP";
+    }
+
+    private void updateBestSolution(int index) {
+
+        // CHECK
+        // update best value and index
+        this.best_solution_value = getFunctionValue(index);
+        this.best_solution_index = index;
+    }
+
+    @Override
+    public TSPInstanceInterface getLoadedInstance() {
+
+        return this.instance;
+    }
+
+    @Override
+    public Location[] getRouteOrderedByLocations() {
+
+        int[] city_ids = getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
+        Location[] route = Arrays.stream(city_ids).boxed().map(getLoadedInstance()::getLocationForCity).toArray(Location[]::new);
+        return route;
+    }
+
+    public static void main(String[] args) {
+
+        long seed = 527893l;
+        long timeLimit = 10_000;
+        G52AIMTSP tsp = new G52AIMTSP(seed);
+        HyperHeuristic hh = new SR_IE_HH(seed);
+        tsp.loadInstance(0);
+        hh.setTimeLimit(timeLimit);
+        hh.loadProblemDomain(tsp);
+        hh.run();
+
+        double best = hh.getBestSolutionValue();
+        System.out.println(best);
+
+        // CHECK you will need to populate this based on your representation!
+        List<Location> routeLocations = new ArrayList<>();
+        Location[] routeLocationList = new Location[routeLocations.size()];
+        routeLocations.toArray(routeLocationList);
+        SolutionPrinter.printSolution(routeLocationList);
+    }
 
 
 }

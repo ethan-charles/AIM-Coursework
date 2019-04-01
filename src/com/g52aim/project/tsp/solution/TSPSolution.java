@@ -5,50 +5,52 @@ import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
 public class TSPSolution implements TSPSolutionInterface {
 
-	private SolutionRepresentationInterface representation;
-	
-	private double objectiveFunctionValue;
-	
-	private int numberOfVariables;
-	
-	public TSPSolution(SolutionRepresentationInterface representation, double objectiveFunctionValue, int numberOfVariables) {
-		
-		this.representation = representation;
-		this.objectiveFunctionValue = objectiveFunctionValue;
-		this.numberOfVariables = numberOfVariables;
-	}
+    private SolutionRepresentationInterface representation;
 
-	@Override
-	public double getObjectiveFunctionValue() {
+    private double objectiveFunctionValue;
 
-		// TODO
-		return -1.0d;
-	}
+    private int numberOfVariables;
 
-	@Override
-	public void setObjectiveFunctionValue(double objectiveFunctionValue) {
-		
-		// TODO
-	}
+    public TSPSolution(SolutionRepresentationInterface representation, double objectiveFunctionValue, int numberOfVariables) {
 
-	@Override
-	public SolutionRepresentationInterface getSolutionRepresentation() {
-		
-		// TODO
-		return null;
-	}
-	
-	@Override
-	public TSPSolutionInterface clone() {
-		
-		// TODO
-		return null;
-	}
+        this.representation = representation;
+        this.objectiveFunctionValue = objectiveFunctionValue;
+        this.numberOfVariables = numberOfVariables;
+    }
 
-	@Override
-	public int getNumberOfCities() {
-		
-		// TODO
-		return -1;
-	}
+    @Override
+    public double getObjectiveFunctionValue() {
+
+        // CHECK
+        return this.objectiveFunctionValue;
+    }
+
+    @Override
+    public void setObjectiveFunctionValue(double objectiveFunctionValue) {
+
+        // CHECK
+        this.objectiveFunctionValue = objectiveFunctionValue;
+    }
+
+    @Override
+    public SolutionRepresentationInterface getSolutionRepresentation() {
+
+        // CHECK
+        return this.representation;
+    }
+
+    @Override
+    public TSPSolutionInterface clone() {
+
+        // CHECK
+        SolutionRepresentation newRepresentation = (SolutionRepresentation) this.representation.clone();
+        return new TSPSolution(newRepresentation, this.objectiveFunctionValue, this.numberOfVariables);
+    }
+
+    @Override
+    public int getNumberOfCities() {
+
+        // CHECK
+        return this.getSolutionRepresentation().getNumberOfCities();
+    }
 }
