@@ -18,7 +18,7 @@ public class TSPInstanceReader implements TSPInstanceReaderInterface {
 
     @Override
     public TSPInstanceInterface readTSPInstance(Path path, Random random) {
-        // TODO
+        // CHECK
 
         BufferedReader reader;
         try {

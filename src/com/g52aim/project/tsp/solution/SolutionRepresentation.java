@@ -3,48 +3,45 @@ package com.g52aim.project.tsp.solution;
 import com.g52aim.project.tsp.interfaces.SolutionRepresentationInterface;
 
 /**
- * 
  * @author Warren G. Jackson
- * 
- *
  */
 public class SolutionRepresentation implements SolutionRepresentationInterface {
 
-	int [] representation;
+    int[] representation;
 
-	public SolutionRepresentation(int[] representation) {
-		
-		// TODO
-		this.representation = representation;
-	}
-	
-	@Override
-	public int[] getSolutionRepresentation() {
+    public SolutionRepresentation(int[] representation) {
 
-		// TODO
-		return this.representation;
-	}
+        // CHECK
+        this.representation = representation;
+    }
 
-	@Override
-	public void setSolutionRepresentation(int[] solution) {
-		
-		// TODO
-		this.representation = solution;
-	}
+    @Override
+    public int[] getSolutionRepresentation() {
 
-	@Override
-	public int getNumberOfCities() {
+        // CHECK
+        return this.representation;
+    }
 
-		// TODO
-		return representation.length;
-	}
+    @Override
+    public void setSolutionRepresentation(int[] solution) {
 
-	@Override
-	public SolutionRepresentationInterface clone() {
-		
-		// TODO - NOTE clone Object, not copy of Object reference!
-		int[] newRepresentation = (int[])this.representation.clone();
-		return new SolutionRepresentation(this.representation);
-	}
+        // CHECK
+        this.representation = solution;
+    }
+
+    @Override
+    public int getNumberOfCities() {
+
+        // CHECK
+        return representation.length;
+    }
+
+    @Override
+    public SolutionRepresentationInterface clone() {
+        // CHECK - NOTE clone Object, not copy of Object reference!
+        int[] newRepresentation = new int[this.representation.length];
+        System.arraycopy(this.representation, 0, newRepresentation, 0, this.representation.length);
+        return new SolutionRepresentation(newRepresentation);
+    }
 
 }

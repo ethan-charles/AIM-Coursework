@@ -33,7 +33,6 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
     private HeuristicInterface[] heuristics;
 
-    int best_solution_index = 0;
     double best_solution_value = Double.POSITIVE_INFINITY;
 
     ObjectiveFunctionInterface f = null;
@@ -47,6 +46,9 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         // set solutions array to default size of 2
         this.solutions = new TSPSolution[2];
         // initialise array of low-level heuristics
+        // HeuristicInterface[] mutationOperators = new HeuristicInterface[]{new AdjacentSwap(rng), new TwoOpt(rng), new Reinsertion(rng)};
+        // HeuristicInterface[] localSearchOperators = new HeuristicInterface[]{new NextDescent(rng), new DavissHillClimbing(rng)};
+        // HeuristicInterface[] crossoverOperators = new HeuristicInterface[]{new OX(rng), new PMX(rng),};
         heuristics = new HeuristicInterface[]{new AdjacentSwap(rng), new TwoOpt(rng), new Reinsertion(rng), new NextDescent(rng), new DavissHillClimbing(rng),
                 new OX(rng), new PMX(rng),
         };
@@ -61,7 +63,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     public TSPSolutionInterface getBestSolution() {
 
         // CHECK
-        return this.solutions[this.best_solution_index];
+        return this.bestSolution;
     }
 
     @Override
@@ -94,7 +96,16 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     public String bestSolutionToString() {
 
         // CHECK
-        return solutionToString(this.best_solution_index);
+        StringBuilder builder = new StringBuilder();
+        TSPSolutionInterface solution = this.bestSolution;
+        double cost = this.best_solution_value;
+        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
+
+        builder.append("Cost = " + cost + "\n");
+        for (int i = 0; i < solutionRepresentation.length; ++i) {
+            builder.append(" " + solutionRepresentation[i]);
+        }
+        return builder.toString();
     }
 
     @Override
@@ -133,9 +144,24 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public int[] getHeuristicsOfType(HeuristicType type) {
 
-        // TODO
+        // CHECK
+        int[] heuristicOfTypeIndices;
+        switch (type) {
+            case MUTATION:
+                heuristicOfTypeIndices = new int[]{0, 1, 2};
+                break;
+            case LOCAL_SEARCH:
+                heuristicOfTypeIndices = new int[]{3, 4};
+                break;
+            case CROSSOVER:
+                heuristicOfTypeIndices = new int[]{5, 6};
+                break;
+            default:
+                heuristicOfTypeIndices = new int[]{};
+                break;
+        }
 
-        return null;
+        return heuristicOfTypeIndices;
     }
 
     @Override
@@ -264,7 +290,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         // CHECK
         // update best value and index
         this.best_solution_value = getFunctionValue(index);
-        this.best_solution_index = index;
+        this.bestSolution = solutions[index].clone();
     }
 
     @Override

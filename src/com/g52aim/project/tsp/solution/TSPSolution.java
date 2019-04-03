@@ -43,7 +43,7 @@ public class TSPSolution implements TSPSolutionInterface {
     public TSPSolutionInterface clone() {
 
         // CHECK
-        SolutionRepresentation newRepresentation = (SolutionRepresentation) this.representation.clone();
+        SolutionRepresentationInterface newRepresentation = this.representation.clone();
         return new TSPSolution(newRepresentation, this.objectiveFunctionValue, this.numberOfVariables);
     }
 
