@@ -18,7 +18,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
     @Override
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
 
-        // TODO implementation of adjacent swap
+        // CHECK implementation of adjacent swap
         int times = getExponentialTimes(intensityOfMutation);
         int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
 
@@ -53,14 +53,13 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 
     @Override
     public boolean usesIntensityOfMutation() {
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean usesDepthOfSearch() {
 
-        return false;
+        return true;
     }
 
 }
