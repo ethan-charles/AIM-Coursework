@@ -14,6 +14,13 @@ public class TSPSolution implements TSPSolutionInterface {
 
     private int numberOfVariables;
 
+    private double delta;
+
+    // to facilitate roll back of solution
+    private int[] previousRepresentation;
+    private double previousObjectiveFunctionValue;
+
+
     public TSPSolution(SolutionRepresentationInterface representation, double objectiveFunctionValue, int numberOfVariables, ObjectiveFunctionInterface f) {
 
         this.representation = representation;
@@ -37,6 +44,11 @@ public class TSPSolution implements TSPSolutionInterface {
     }
 
     @Override
+    public double getDeltaValue() {
+        return this.delta;
+    }
+
+    @Override
     public SolutionRepresentationInterface getSolutionRepresentation() {
 
         // CHECK
@@ -47,10 +59,14 @@ public class TSPSolution implements TSPSolutionInterface {
     // update on existing solution
     @Override
     public void updateSolutionRepresentation(int[] solution) {
+        // keep track of these so it is less expensive to roll back to previous solution
+        this.previousRepresentation = this.representation.getSolutionRepresentation();
+        this.previousObjectiveFunctionValue = this.objectiveFunctionValue;
+
         this.representation.setSolutionRepresentation(solution);
-        // needs updating of solution function value
-        double deltaValue = getDeltaFunctionValue(solution);
-        this.setObjectiveFunctionValue(this.objectiveFunctionValue + deltaValue);
+        // set the delta, so it can retrieved easier
+        this.delta = getDeltaFunctionValue(solution);
+        this.setObjectiveFunctionValue(this.objectiveFunctionValue + this.delta);
     }
 
     public double getDeltaFunctionValue(int[] solution) {
@@ -74,4 +90,8 @@ public class TSPSolution implements TSPSolutionInterface {
         return this.getSolutionRepresentation().getNumberOfCities();
     }
 
+    public void rollBackSolution() {
+        this.representation.setSolutionRepresentation(this.previousRepresentation);
+        this.objectiveFunctionValue = this.previousObjectiveFunctionValue;
+    }
 }

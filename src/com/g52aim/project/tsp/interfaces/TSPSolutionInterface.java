@@ -14,4 +14,8 @@ public interface TSPSolutionInterface extends Cloneable {
 
     public void updateSolutionRepresentation(int[] solution);
 
+    public double getDeltaValue();
+
+    public void rollBackSolution();
+
 }

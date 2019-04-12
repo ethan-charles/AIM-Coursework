@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.g52aim.project.tsp.interfaces.HeuristicInterface;
 import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
-import com.g52aim.project.tsp.solution.TSPSolution;
 
 
 /**
@@ -22,24 +21,42 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
 
         // TODO implement Davis's Hill Climbing using adjacent swaps
-        int searchTimes = getIncrementalTimes(dos);
-        int mutationTimes = getIncrementalTimes(iom);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
 
-        for (int i = 0; i < searchTimes; i++) {
-            TSPSolutionInterface tempSolution = solution.clone();
-            double currentFitness = tempSolution.getObjectiveFunctionValue();
+        int times = getIncrementalTimes(dos);
 
-
-            // perform adjacent swap
-
-
+        int n = solution.getNumberOfCities();
+        int[] orderList = new int[n];
+        for (int i = 0; i < n; i++) {
+            orderList[i] = i;
         }
-        return -1;
+
+        for (int i = 0; i < times; i++) {
+            int[] shuffledList = orderList.clone();
+            shuffleArray(shuffledList);
+            ActualDHC(solution, shuffledList);
+        }
+        return solution.getObjectiveFunctionValue();
     }
 
+    private void ActualDHC(TSPSolutionInterface solution, int[] orderList) {
+        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int n = solutionRepresentation.length;
+
+        for (int i = 0; i < n; i++) {
+            // will have to clone the array, because this is linked to the actual solution array
+            ActualAdjacentSwap(solutionRepresentation.clone(), orderList[i]);
+            solution.updateSolutionRepresentation(solutionRepresentation);
+
+            // the delta value is previously being update by new solution
+            if (solution.getDeltaValue() >= 0) {
+                // if strict improvement, immediately accept the solution
+                // else revert back to previous solution
+                solution.rollBackSolution();
+            }
+        }
+    }
     /*
-     * TODO update the methods below to return the correct boolean value.
+     * CHECK update the methods below to return the correct boolean value.
      */
 
     @Override
@@ -57,6 +74,6 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     @Override
     public boolean usesDepthOfSearch() {
 
-        return false;
+        return true;
     }
 }
