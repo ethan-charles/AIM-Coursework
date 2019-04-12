@@ -40,9 +40,9 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         }
 
         if (random.nextInt(2) == 0) {
-            c.getSolutionRepresentation().setSolutionRepresentation(p1Array);
+            c.updateSolutionRepresentation(p1Array);
         } else {
-            c.getSolutionRepresentation().setSolutionRepresentation(p2Array);
+            c.updateSolutionRepresentation(p2Array);
         }
         return c.getObjectiveFunctionValue();
     }

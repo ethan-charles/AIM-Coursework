@@ -3,6 +3,7 @@ package com.g52aim.project.tsp.heuristics;
 import java.util.Random;
 
 import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
+import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
 
 /**
@@ -84,6 +85,7 @@ public class HeuristicOperators {
         // CHECK store the objective function so we can use it later!
         this.f = f;
     }
+
 
     protected void shuffleArray(int[] ar) {
         for (int i = ar.length - 1; i > 0; i--) {

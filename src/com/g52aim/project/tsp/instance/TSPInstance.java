@@ -36,7 +36,7 @@ public class TSPInstance implements TSPInstanceInterface {
             int[] array = random.ints(1, getNumberOfCities() + 1).distinct().limit(getNumberOfCities()).toArray();
             SolutionRepresentation representation = new SolutionRepresentation(array);
             f = new TSPObjectiveFunction(this);
-            solutions = new TSPSolution(representation, f.getObjectiveFunctionValue(representation), getNumberOfCities());
+            solutions = new TSPSolution(representation, f.getObjectiveFunctionValue(representation), getNumberOfCities(), f);
         }
         return solutions;
     }

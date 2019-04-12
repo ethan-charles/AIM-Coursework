@@ -29,7 +29,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
         }
 
         // set to the new solution
-        solution.getSolutionRepresentation().setSolutionRepresentation(array);
+        solution.updateSolutionRepresentation(array);
         return solution.getObjectiveFunctionValue();
     }
 

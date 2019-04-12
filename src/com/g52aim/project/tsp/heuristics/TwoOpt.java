@@ -35,7 +35,7 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
         }
 
         // set to the new solution
-        solution.getSolutionRepresentation().setSolutionRepresentation(array);
+        solution.updateSolutionRepresentation(array);
         return solution.getObjectiveFunctionValue();
     }
 
