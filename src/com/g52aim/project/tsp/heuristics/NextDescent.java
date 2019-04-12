@@ -39,7 +39,6 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
         int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
         // have to clone
         int[] bestRepresentation = solutionRepresentation.clone();
-        double bestDelta = Double.MAX_VALUE;
         int n = solution.getNumberOfCities();
         for (int i = 0; i < n; i++) {
             int[] clonedRepresentation = solutionRepresentation.clone();
@@ -49,13 +48,11 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
             double delta = solution.computeDeltaValue(clonedRepresentation);
 
             // the more negative, the better the improvement
-            if (delta < bestDelta) {
-                bestDelta = delta;
-                bestRepresentation = clonedRepresentation;
+            if (delta < 0) {
+                solution.updateSolutionRepresentation(clonedRepresentation);
             }
         }
         // only update the solution at last
-        solution.updateSolutionRepresentation(bestRepresentation);
     }
 
     @Override

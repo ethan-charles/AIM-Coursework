@@ -27,7 +27,7 @@ public class TSPObjectiveFunction implements ObjectiveFunctionInterface {
                 if (index == 0) {
                     leftIndex = n - 1;
                 } else {
-                    leftIndex = previousSolution[index - 1];
+                    leftIndex = index - 1;
                 }
                 // if index is last, get the first index
                 if (index == n - 1) {

@@ -200,7 +200,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     public int getNumberOfHeuristics() {
 
         // CHECK - has to be hard-coded due to the design of the HyFlex framework
-        return heuristics.length;
+        return 7;
     }
 
     @Override

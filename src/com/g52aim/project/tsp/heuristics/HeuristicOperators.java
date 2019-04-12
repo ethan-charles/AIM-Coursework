@@ -68,16 +68,16 @@ public class HeuristicOperators {
         return times;
     }
 
-    protected void ActualAdjacentSwap(int[] array, int firstCity) {
+    protected void ActualAdjacentSwap(int[] array, int index) {
         // validation check of boundary index
-        int secondCity = firstCity + 1;
-        if (firstCity == array.length - 1) {
-            secondCity = 1;
+        int nextIndex = index + 1;
+        if (index == array.length - 1) {
+            nextIndex = 0;
         }
         // swap
-        int temp = array[firstCity];
-        array[firstCity] = array[secondCity];
-        array[secondCity] = temp;
+        int temp = array[index];
+        array[index] = array[nextIndex];
+        array[nextIndex] = temp;
     }
 
     public void setObjectiveFunction(ObjectiveFunctionInterface f) {
