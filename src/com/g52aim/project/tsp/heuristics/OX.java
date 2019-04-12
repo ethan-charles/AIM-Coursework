@@ -48,9 +48,6 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
     }
 
     private int[][] ActualOX(int[] p1Array, int[] p2Array) {
-        int[] p1Copy = p1Array.clone();
-        int[] p2Copy = p2Array.clone();
-
         int n = p1Array.length;
 
         int cutpoint_1 = this.random.nextInt(n);
@@ -69,7 +66,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
 
         numberOfPointsWillStay = cutpoint_2 - cutpoint_1;
         int[] locationList_p1 = listLocationOfElement(p1Array);
-        int[] locationList_p2 = listLocationOfElement(p2Copy);
+        int[] locationList_p2 = listLocationOfElement(p2Array);
 
         int ele;
         int pointOfInsertion;
@@ -85,21 +82,21 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             // get the location of the element in p2
             locationOfEle = locationList_p2[ele];
             // set the ele to -1 so will not get copied later
-            p2Copy[locationOfEle] = -1;
+            p2Array[locationOfEle] = -1;
 
             // do the same for child1
             ele = p2Array[cutpoint_1 + pointOfInsertion];
             locationOfEle = locationList_p1[ele];
-            p1Copy[locationOfEle] = -1;
+            p1Array[locationOfEle] = -1;
         }
         int[] a = new int[n];
-        System.arraycopy(p1Copy, cutpoint_2, a, 0, n - cutpoint_2);
-        System.arraycopy(p1Copy, 0, a, n - cutpoint_2, cutpoint_2);
-        p1Copy = a;
+        System.arraycopy(p1Array, cutpoint_2, a, 0, n - cutpoint_2);
+        System.arraycopy(p1Array, 0, a, n - cutpoint_2, cutpoint_2);
+        p1Array = a;
         int[] b = new int[n];
-        System.arraycopy(p2Copy, cutpoint_2, b, 0, n - cutpoint_2);
-        System.arraycopy(p2Copy, 0, b, n - cutpoint_2, cutpoint_2);
-        p2Copy = b;
+        System.arraycopy(p2Array, cutpoint_2, b, 0, n - cutpoint_2);
+        System.arraycopy(p2Array, 0, b, n - cutpoint_2, cutpoint_2);
+        p2Array = b;
 
         int[] child1 = p1Array.clone();
         int[] child2 = p2Array.clone();
@@ -107,7 +104,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         // copy from p1Copy to child2
         int counter = 0;
         for (int i = cutpoint_2; i < n; i++) {
-            ele = p1Copy[counter];
+            ele = p1Array[counter];
             if (ele != -1) {
                 child2[i] = ele;
             } else {
@@ -116,7 +113,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             counter++;
         }
         for (int i = 0; i < cutpoint_1; i++) {
-            ele = p1Copy[counter];
+            ele = p1Array[counter];
             if (ele != -1) {
                 child2[i] = ele;
             } else {
@@ -129,7 +126,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         // now copy from p2Copy to child1
         counter = 0;
         for (int i = cutpoint_2; i < n; i++) {
-            ele = p2Copy[counter];
+            ele = p2Array[counter];
             if (ele != -1) {
                 child1[i] = ele;
             } else {
@@ -138,7 +135,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             counter++;
         }
         for (int i = 0; i < cutpoint_1; i++) {
-            ele = p2Copy[counter];
+            ele = p2Array[counter];
             if (ele != -1) {
                 child1[i] = ele;
             } else {
