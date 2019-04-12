@@ -32,11 +32,13 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         int times = getIncrementalTimes(intensityOfMutation);
         int[][] childTuple;
         for (int i = 0; i < times; i++) {
-            childTuple = ActualOX(p1Array, p2Array);
-            int[] child1 = childTuple[0];
-            int[] child2 = childTuple[1];
-            p1Array = child1;
-            p2Array = child2;
+            int[] child1 = p1Array.clone();
+            int[] child2 = p1Array.clone();
+            // pass value not reference
+            childTuple = ActualOX(child1, child2);
+            // reassigning reference
+            p1Array = childTuple[0];
+            p2Array = childTuple[1];
         }
 
         if (random.nextInt(2) == 0) {

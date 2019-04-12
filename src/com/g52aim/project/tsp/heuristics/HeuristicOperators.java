@@ -67,10 +67,31 @@ public class HeuristicOperators {
         return times;
     }
 
+    protected void ActualAdjacentSwap(int[] array, int firstCity) {
+        // validation check of boundary index
+        int secondCity = firstCity + 1;
+        if (firstCity == array.length - 1) {
+            secondCity = 1;
+        }
+        // swap
+        int temp = array[firstCity];
+        array[firstCity] = array[secondCity];
+        array[secondCity] = temp;
+    }
 
     public void setObjectiveFunction(ObjectiveFunctionInterface f) {
 
         // CHECK store the objective function so we can use it later!
         this.f = f;
+    }
+
+    protected void shuffleArray(int[] ar) {
+        for (int i = ar.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            // Simple swap
+            int a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
     }
 }

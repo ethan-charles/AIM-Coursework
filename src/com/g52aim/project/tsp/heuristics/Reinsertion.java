@@ -19,21 +19,9 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
         // CHECK implementation of reinsertion heuristic
 
-        int times = 0;
+        int times = getIncrementalTimes(intensityOfMutation);
         int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
-        if (intensityOfMutation >= 0 && intensityOfMutation < 0.2) {
-            times = 1;
-        } else if (intensityOfMutation < 0.4) {
-            times = 2;
-        } else if (intensityOfMutation < 0.6) {
-            times = 3;
-        } else if (intensityOfMutation < 0.8) {
-            times = 4;
-        } else if (intensityOfMutation < 1.0) {
-            times = 5;
-        } else if (intensityOfMutation == 1.0) {
-            times = 6;
-        }
+
 
         // performs reinsertion of n times
         for (int i = 0; i < times; i++) {

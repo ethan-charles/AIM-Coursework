@@ -25,15 +25,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
         // performs adjacent swaps of n times
         for (int i = 0; i < times; i++) {
             int firstCity = random.nextInt(array.length);
-            int secondCity = firstCity + 1;
-            // validation check of boundary index
-            if (firstCity == array.length - 1) {
-                secondCity = 1;
-            }
-            // swap
-            int temp = array[firstCity];
-            array[firstCity] = array[secondCity];
-            array[secondCity] = temp;
+            ActualAdjacentSwap(array, firstCity);
         }
 
         // set to the new solution

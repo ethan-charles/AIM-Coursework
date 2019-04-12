@@ -2,7 +2,6 @@ package com.g52aim.project.tsp.instance;
 
 
 public class Location {
-
 	private final double x;
 	
 	private final double y;

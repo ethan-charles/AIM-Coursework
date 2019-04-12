@@ -26,25 +26,6 @@ public class CrossoverHeuristicOperators {
 	
 		this.random = random;
 	}
-	public int getExponentialTimes(double strength) {
-		// base 2
-		int times = 0;
-
-		if (strength >= 0 && strength < 0.2) {
-			times = 1;
-		} else if (strength < 0.4) {
-			times = 2;
-		} else if (strength < 0.6) {
-			times = 4;
-		} else if (strength < 0.8) {
-			times = 8;
-		} else if (strength < 1.0) {
-			times = 16;
-		} else if (strength == 1.0) {
-			times = 32;
-		}
-		return times;
-	}
 
 	public int getIncrementalTimes(double strength) {
 		int times = 0;
