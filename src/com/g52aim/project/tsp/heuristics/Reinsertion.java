@@ -77,7 +77,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
     @Override
     public boolean usesIntensityOfMutation() {
 
-        return false;
+        return true;
     }
 
     @Override

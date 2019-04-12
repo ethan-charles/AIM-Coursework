@@ -85,35 +85,35 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         }
 
         for (int i = 0; i < cutpoint_1; i++) {
-            int temp = mapP1[p2copy[i]];
+            int temp = mapP1[p2Array[i]];
             if (temp == -1) {
-                p1Array[i] = p2copy[i];
+                p1copy[i] = p2Array[i];
             } else {
-                p1Array[i] = temp;
+                p1copy[i] = temp;
             }
-            temp = mapP2[p1copy[i]];
+            temp = mapP2[p1Array[i]];
             if (temp == -1) {
-                p2Array[i] = p1copy[i];
+                p2copy[i] = p1Array[i];
             } else {
-                p2Array[i] = temp;
+                p2copy[i] = temp;
             }
         }
 
         for (int i = cutpoint_2; i < n; i++) {
-            int temp = mapP1[p2copy[i]];
+            int temp = mapP1[p2Array[i]];
             if (temp == -1) {
-                p1Array[i] = p2copy[i];
+                p1copy[i] = p2Array[i];
             } else {
-                p1Array[i] = temp;
+                p1copy[i] = temp;
             }
-            temp = mapP2[p1copy[i]];
+            temp = mapP2[p1Array[i]];
             if (temp == -1) {
-                p2Array[i] = p1copy[i];
+                p2copy[i] = p1Array[i];
             } else {
-                p2Array[i] = temp;
+                p2copy[i] = temp;
             }
         }
-        return new int[][]{p2Array, p1Array};
+        return new int[][]{p2copy, p1copy};
     }
     /*
      * TODO update the methods below to return the correct boolean value.
@@ -122,13 +122,13 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
     @Override
     public boolean isCrossover() {
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean usesIntensityOfMutation() {
 
-        return false;
+        return true;
     }
 
     @Override
