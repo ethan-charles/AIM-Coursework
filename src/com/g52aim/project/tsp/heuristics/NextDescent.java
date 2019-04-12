@@ -8,45 +8,70 @@ import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
 
 /**
- * 
  * @author Warren G. Jackson
  * Performs adjacent swap, returning the first solution with strict improvement
- *
  */
 public class NextDescent extends HeuristicOperators implements HeuristicInterface {
-	
-	public NextDescent(Random random) {
-	
-		super(random);
-	}
 
-	@Override
-	public double apply(TSPSolutionInterface solution, double dos, double iom) {
+    public NextDescent(Random random) {
 
-		// TODO implementation of Next Descent using adjacent swap for the 
-		//	perturbation operator.
-		return -1;
-	}
+        super(random);
+    }
 
-	/*
-	 * TODO update the methods below to return the correct boolean value.
-	 */
+    @Override
+    public double apply(TSPSolutionInterface solution, double dos, double iom) {
 
-	@Override
-	public boolean isCrossover() {
+        // CHECK implementation of Next Descent using adjacent swap for the
+        int times = getIncrementalTimes(dos);
 
-		return false;
-	}
+        for (int i = 0; i < times; i++) {
+            ActualNextDescent(solution);
+        }
+        return solution.getObjectiveFunctionValue();
+    }
 
-	@Override
-	public boolean usesIntensityOfMutation() {
+    /*
+     * CHECK update the methods below to return the correct boolean value.
+     */
 
-		return false;
-	}
+    private void ActualNextDescent(TSPSolutionInterface solution) {
+        // don't ever update the solution find delta only, update means accept the solution
+        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
+        // have to clone
+        int[] bestRepresentation = solutionRepresentation.clone();
+        double bestDelta = Double.MAX_VALUE;
+        int n = solution.getNumberOfCities();
+        for (int i = 0; i < n; i++) {
+            int[] clonedRepresentation = solutionRepresentation.clone();
+            ActualAdjacentSwap(clonedRepresentation, i);
 
-	@Override
-	public boolean usesDepthOfSearch() {
+            // use the delta function
+            double delta = solution.computeDeltaValue(clonedRepresentation);
 
-		return false;
-	}
+            // the more negative, the better the improvement
+            if (delta < bestDelta) {
+                bestDelta = delta;
+                bestRepresentation = clonedRepresentation;
+            }
+        }
+        // only update the solution at last
+        solution.updateSolutionRepresentation(bestRepresentation);
+    }
+
+    @Override
+    public boolean isCrossover() {
+        return false;
+    }
+
+    @Override
+    public boolean usesIntensityOfMutation() {
+
+        return false;
+    }
+
+    @Override
+    public boolean usesDepthOfSearch() {
+
+        return true;
+    }
 }

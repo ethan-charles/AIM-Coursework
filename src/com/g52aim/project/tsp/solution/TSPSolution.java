@@ -65,11 +65,12 @@ public class TSPSolution implements TSPSolutionInterface {
 
         this.representation.setSolutionRepresentation(solution);
         // set the delta, so it can retrieved easier
-        this.delta = getDeltaFunctionValue(solution);
+        this.delta = computeDeltaValue(solution);
         this.setObjectiveFunctionValue(this.objectiveFunctionValue + this.delta);
     }
 
-    public double getDeltaFunctionValue(int[] solution) {
+    @Override
+    public double computeDeltaValue(int[] solution) {
         // to get the computed cost difference between new and old solution
         // pass in the previous solution representation
         return this.f.computeDeltaFunctionValue(this.representation.getSolutionRepresentation(), solution);

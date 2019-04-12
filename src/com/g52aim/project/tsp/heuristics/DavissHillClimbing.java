@@ -20,7 +20,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     @Override
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
 
-        // TODO implement Davis's Hill Climbing using adjacent swaps
+        // CHECK implement Davis's Hill Climbing using adjacent swaps
 
         int times = getIncrementalTimes(dos);
 
@@ -44,8 +44,9 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 
         for (int i = 0; i < n; i++) {
             // will have to clone the array, because this is linked to the actual solution array
-            ActualAdjacentSwap(solutionRepresentation.clone(), orderList[i]);
-            solution.updateSolutionRepresentation(solutionRepresentation);
+            int[] clonedRepresentation = solutionRepresentation.clone();
+            ActualAdjacentSwap(clonedRepresentation, orderList[i]);
+            solution.updateSolutionRepresentation(clonedRepresentation);
 
             // the delta value is previously being update by new solution
             if (solution.getDeltaValue() >= 0) {
