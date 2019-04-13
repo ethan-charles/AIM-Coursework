@@ -72,7 +72,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
 
         int ele;
         int pointOfInsertion;
-
+        int[] some1 = p1Array.clone();
+        int[] some2 = p2Array.clone();
         // "nullify" the location index of staying element, so they will not get considered later
         // so there's no duplicate when copy from one to another
         for (pointOfInsertion = 0; pointOfInsertion < numberOfPointsWillStay; pointOfInsertion++) {
@@ -80,33 +81,34 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
 
             // get the element starting from the cutoff point
             ele = p1Array[cutpoint_1 + pointOfInsertion];
-            System.out.println(ele);
             // get the location of the element in p2
+            System.out.println("location: " + ele);
             locationOfEle = locationList_p2[ele];
             // set the ele to -1 so will not get copied later
-            p2Array[locationOfEle] = -1;
+            some2[locationOfEle] = -1;
 
             // do the same for child1
             ele = p2Array[cutpoint_1 + pointOfInsertion];
             locationOfEle = locationList_p1[ele];
-            p1Array[locationOfEle] = -1;
+            some1[locationOfEle] = -1;
         }
         int[] a = new int[n];
-        System.arraycopy(p1Array, cutpoint_2, a, 0, n - cutpoint_2);
-        System.arraycopy(p1Array, 0, a, n - cutpoint_2, cutpoint_2);
-        p1Array = a;
+//         copy to a temp array to rearrange structure
+//        right shifted
+        System.arraycopy(some1, cutpoint_2 + 1, a, 0, n - cutpoint_2 - 1);
+        System.arraycopy(some1, 0, a, n - cutpoint_2 - 1, cutpoint_2 + 1);
         int[] b = new int[n];
-        System.arraycopy(p2Array, cutpoint_2, b, 0, n - cutpoint_2);
-        System.arraycopy(p2Array, 0, b, n - cutpoint_2, cutpoint_2);
-        p2Array = b;
+        System.arraycopy(some2, cutpoint_2 + 1, b, 0, n - cutpoint_2 - 1);
+        System.arraycopy(some2, 0, b, n - cutpoint_2 - 1, cutpoint_2 + 1);
 
         int[] child1 = p1Array.clone();
         int[] child2 = p2Array.clone();
 
         // copy from p1Copy to child2
+//        dont copy if some1[counter] is -1, else retrieve value a[counter]
         int counter = 0;
-        for (int i = cutpoint_2; i < n; i++) {
-            ele = p1Array[counter];
+        for (int i = 0; i <= cutpoint_1; i++) {
+            ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
             } else {
@@ -114,8 +116,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             }
             counter++;
         }
-        for (int i = 0; i < cutpoint_1; i++) {
-            ele = p1Array[counter];
+        for (int i = cutpoint_2 + 1; i < n; i++) {
+            ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
             } else {
@@ -123,28 +125,30 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             }
             counter++;
         }
+
 
 
         // now copy from p2Copy to child1
         counter = 0;
-        for (int i = cutpoint_2; i < n; i++) {
-            ele = p2Array[counter];
+        for (int i = 0; i <= cutpoint_1; i++) {
+            ele = b[counter];
             if (ele != -1) {
                 child1[i] = ele;
             } else {
-                --i;
+                i--;
             }
             counter++;
         }
-        for (int i = 0; i < cutpoint_1; i++) {
-            ele = p2Array[counter];
+        for (int i = cutpoint_2+1; i < n; i++) {
+            ele = b[counter];
             if (ele != -1) {
                 child1[i] = ele;
             } else {
-                --i;
+                i--;
             }
             counter++;
         }
+
         return new int[][]{child1, child2};
     }
 
@@ -154,7 +158,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         // used to find the location of in a less expensive way
         int[] locationList = new int[array.length];
         for (int i = 0; i < array.length; i++) {
-            locationList[array[i]] = i;
+            locationList[array[i] - 1] = i;
         }
         return locationList;
     }
