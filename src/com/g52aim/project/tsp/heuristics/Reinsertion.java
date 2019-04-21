@@ -18,6 +18,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
     @Override
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
         // CHECK implementation of reinsertion heuristic
+        System.out.println("Reinsertion");
 
         int times = getIncrementalTimes(intensityOfMutation);
         int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
@@ -26,9 +27,13 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
         // performs reinsertion of n times
         for (int i = 0; i < times; i++) {
             // generate two unique index, one to select the inserted element and one to select the reinserted position
-            int[] randomIndexes = random.ints(0, array.length).distinct().limit(2).toArray();
-            int removedPosition = randomIndexes[0];
-            int insertPosition = randomIndexes[1];
+            int n = array.length;
+            int removedPosition = random.nextInt(n);
+            int insertPosition;
+            for (insertPosition = random.nextInt(n); removedPosition == insertPosition; ) {
+                // continue until a different index is generated
+                insertPosition = this.random.nextInt(n);
+            }
 
             int temp = array[removedPosition];
             int[] result = new int[array.length];
@@ -36,14 +41,14 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
             // remove at removed position
             // copy without the removed element
             System.arraycopy(array, 0, result, 0, removedPosition);
-            System.arraycopy(array, removedPosition + 1, result, removedPosition, array.length - removedPosition - 1);
+            System.arraycopy(array, removedPosition + 1, result, removedPosition, n - removedPosition - 1);
             // reassigning result
             array = result;
 
             // insert at insert position
             System.arraycopy(array, 0, result, 0, insertPosition);
-            System.arraycopy(array, insertPosition, result, insertPosition + 1, array.length - insertPosition - 1);
-            result[removedPosition] = temp;
+            System.arraycopy(array, insertPosition-1, result, insertPosition, n - insertPosition);
+            result[insertPosition] = temp;
             array = result;
         }
 
