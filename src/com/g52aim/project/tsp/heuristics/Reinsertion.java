@@ -36,20 +36,17 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
             }
 
             int temp = array[removedPosition];
-            int[] result = new int[array.length];
+            int[] tempArray = new int[array.length];
 
             // remove at removed position
             // copy without the removed element
-            System.arraycopy(array, 0, result, 0, removedPosition);
-            System.arraycopy(array, removedPosition + 1, result, removedPosition, n - removedPosition - 1);
-            // reassigning result
-            array = result;
+            System.arraycopy(array, 0, tempArray, 0, removedPosition);
+            System.arraycopy(array, removedPosition + 1, tempArray, removedPosition, n - removedPosition - 1);
 
             // insert at insert position
-            System.arraycopy(array, 0, result, 0, insertPosition);
-            System.arraycopy(array, insertPosition-1, result, insertPosition, n - insertPosition);
-            result[insertPosition] = temp;
-            array = result;
+            System.arraycopy(tempArray, 0, array, 0, insertPosition);
+            System.arraycopy(tempArray, insertPosition, array, insertPosition + 1, n - insertPosition - 1);
+            array[insertPosition] = temp;
         }
 
         // set to the new solution
