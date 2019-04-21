@@ -66,32 +66,32 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
             cutpoint_2 = numberOfPointsWillStay;
         }
 
-        // create mapping
+        // create mapping of  cities to cities
         int[] mapP1 = new int[n];
         int[] mapP2 = new int[n];
         for (int i = 0; i < cutpoint_1; i++) {
-            mapP1[p1Array[i]] = -1;
-            mapP2[p2Array[i]] = -1;
+            mapP1[p1Array[i]-1] = -1;
+            mapP2[p2Array[i]-1] = -1;
         }
-        for (int i = cutpoint_1; i < cutpoint_2; i++) {
-            mapP1[p1Array[i]] = p2Array[i];
-            mapP2[p2Array[i]] = p1Array[i];
+        for (int i = cutpoint_1; i <= cutpoint_2; i++) {
+            mapP1[p1Array[i]-1] = p2Array[i];
+            mapP2[p2Array[i]-1] = p1Array[i];
         }
-        for (int i = cutpoint_2; i < n; i++) {
+        for (int i = cutpoint_2 + 1; i < n; i++) {
             // mapP1, contains mapping from P2 to P1, used by p1
-            mapP1[p1Array[i]] = -1;
+            mapP1[p1Array[i]-1] = -1;
             // mapP2, contains mapping from P1 to P2, used by p2
-            mapP2[p2Array[i]] = -1;
+            mapP2[p2Array[i]-1] = -1;
         }
 
         for (int i = 0; i < cutpoint_1; i++) {
-            int temp = mapP1[p2Array[i]];
+            int temp = mapP1[p2Array[i]-1];
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
                 p1copy[i] = temp;
             }
-            temp = mapP2[p1Array[i]];
+            temp = mapP2[p1Array[i]-1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
@@ -100,13 +100,13 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         }
 
         for (int i = cutpoint_2; i < n; i++) {
-            int temp = mapP1[p2Array[i]];
+            int temp = mapP1[p2Array[i]-1];
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
                 p1copy[i] = temp;
             }
-            temp = mapP2[p1Array[i]];
+            temp = mapP2[p1Array[i]-1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
