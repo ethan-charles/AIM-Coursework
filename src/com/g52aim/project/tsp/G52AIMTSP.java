@@ -87,9 +87,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         // CHECK - apply heuristic and return the objective value of the candidate solution
         double dos = rng.nextDouble();
         double iom = rng.nextDouble();
-        double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
-
-        return objectiveValue;
+        return ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
     }
 
     @Override
