@@ -25,7 +25,7 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
     @Override
     public double apply(TSPSolutionInterface p1, TSPSolutionInterface p2,
                         TSPSolutionInterface c, double depthOfSearch, double intensityOfMutation) {
-        System.out.println("PMX");
+        System.out.println("Heuristic: PMX");
 
         // CHECK implementation of ordered crossover
         int[] p1Array = p1.getSolutionRepresentation().getSolutionRepresentation();
@@ -71,31 +71,31 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         int[] mapP1 = new int[n];
         int[] mapP2 = new int[n];
         for (int i = 0; i < cutpoint_1; i++) {
-            mapP1[p1Array[i]-1] = -1;
-            mapP2[p2Array[i]-1] = -1;
+            mapP1[p1Array[i] - 1] = -1;
+            mapP2[p2Array[i] - 1] = -1;
         }
         for (int i = cutpoint_1; i <= cutpoint_2; i++) {
-            if (p1Array[i]-1<0|| p2Array[i]-1<0){
-            System.out.println("debug");
+            if (p1Array[i] - 1 < 0 || p2Array[i] - 1 < 0) {
+                System.out.println("debug");
             }
-            mapP1[p1Array[i]-1] = p2Array[i];
-            mapP2[p2Array[i]-1] = p1Array[i];
+            mapP1[p1Array[i] - 1] = p2Array[i];
+            mapP2[p2Array[i] - 1] = p1Array[i];
         }
         for (int i = cutpoint_2 + 1; i < n; i++) {
             // mapP1, contains mapping from P2 to P1, used by p1
-            mapP1[p1Array[i]-1] = -1;
+            mapP1[p1Array[i] - 1] = -1;
             // mapP2, contains mapping from P1 to P2, used by p2
-            mapP2[p2Array[i]-1] = -1;
+            mapP2[p2Array[i] - 1] = -1;
         }
 
         for (int i = 0; i < cutpoint_1; i++) {
-            int temp = mapP1[p2Array[i]-1];
+            int temp = mapP1[p2Array[i] - 1];
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
                 p1copy[i] = temp;
             }
-            temp = mapP2[p1Array[i]-1];
+            temp = mapP2[p1Array[i] - 1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
@@ -104,13 +104,13 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         }
 
         for (int i = cutpoint_2; i < n; i++) {
-            int temp = mapP1[p2Array[i]-1];
+            int temp = mapP1[p2Array[i] - 1];
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
                 p1copy[i] = temp;
             }
-            temp = mapP2[p1Array[i]-1];
+            temp = mapP2[p1Array[i] - 1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
