@@ -20,6 +20,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
     @Override
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
+        System.out.println("Heuristic: Next Descent");
 
         // CHECK implementation of Next Descent using adjacent swap for the
         int times = getIncrementalTimes(dos);
@@ -30,15 +31,11 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
         return solution.getObjectiveFunctionValue();
     }
 
-    /*
-     * CHECK update the methods below to return the correct boolean value.
-     */
 
     private void ActualNextDescent(TSPSolutionInterface solution) {
         // don't ever update the solution find delta only, update means accept the solution
         int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
         // have to clone
-        int[] bestRepresentation = solutionRepresentation.clone();
         int n = solution.getNumberOfCities();
         for (int i = 0; i < n; i++) {
             int[] clonedRepresentation = solutionRepresentation.clone();
@@ -52,9 +49,11 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
                 solution.updateSolutionRepresentation(clonedRepresentation);
             }
         }
-        // only update the solution at last
     }
 
+    /*
+     * CHECK update the methods below to return the correct boolean value.
+     */
     @Override
     public boolean isCrossover() {
         return false;

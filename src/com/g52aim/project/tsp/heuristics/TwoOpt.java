@@ -17,7 +17,7 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
 
     @Override
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
-
+        System.out.println("Heuristic: Two Opt");
         // CHECK implementation of two-opt swap heuristic
         int times = getIncrementalTimes(iom);
         int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
@@ -40,7 +40,7 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
     }
 
     /*
-     * TODO update the methods below to return the correct boolean value.
+     * CHECK update the methods below to return the correct boolean value.
      */
 
     @Override
@@ -52,7 +52,7 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
     @Override
     public boolean usesIntensityOfMutation() {
 
-        return false;
+        return true;
     }
 
     @Override

@@ -25,6 +25,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
     @Override
     public double apply(TSPSolutionInterface p1, TSPSolutionInterface p2,
                         TSPSolutionInterface c, double depthOfSearch, double intensityOfMutation) {
+        System.out.println("Heuristic: OX");
 
         // CHECK implementation of ordered crossover
         int[] p1Array = p1.getSolutionRepresentation().getSolutionRepresentation();
@@ -167,7 +168,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         return locationList;
     }
     /*
-     * TODO update the methods below to return the correct boolean value.
+     * CHECK update the methods below to return the correct boolean value.
      */
 
     @Override

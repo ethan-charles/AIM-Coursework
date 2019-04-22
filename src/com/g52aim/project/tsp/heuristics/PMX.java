@@ -25,6 +25,7 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
     @Override
     public double apply(TSPSolutionInterface p1, TSPSolutionInterface p2,
                         TSPSolutionInterface c, double depthOfSearch, double intensityOfMutation) {
+        System.out.println("PMX");
 
         // CHECK implementation of ordered crossover
         int[] p1Array = p1.getSolutionRepresentation().getSolutionRepresentation();
@@ -74,6 +75,9 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
             mapP2[p2Array[i]-1] = -1;
         }
         for (int i = cutpoint_1; i <= cutpoint_2; i++) {
+            if (p1Array[i]-1<0|| p2Array[i]-1<0){
+            System.out.println("debug");
+            }
             mapP1[p1Array[i]-1] = p2Array[i];
             mapP2[p2Array[i]-1] = p1Array[i];
         }
@@ -116,7 +120,7 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
         return new int[][]{p2copy, p1copy};
     }
     /*
-     * TODO update the methods below to return the correct boolean value.
+     * CHECK update the methods below to return the correct boolean value.
      */
 
     @Override
