@@ -66,7 +66,9 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
             cutpoint_1 = cutpoint_2;
             cutpoint_2 = numberOfPointsWillStay;
         }
-
+        if (cutpoint_2 - cutpoint_1 == n - 1) {
+            return new int[][]{p2Array, p1Array};
+        }
         // create mapping of  cities to cities
         int[] mapP1 = new int[n];
         int[] mapP2 = new int[n];
@@ -75,9 +77,6 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
             mapP2[p2Array[i] - 1] = -1;
         }
         for (int i = cutpoint_1; i <= cutpoint_2; i++) {
-            if (p1Array[i] - 1 < 0 || p2Array[i] - 1 < 0) {
-                System.out.println("debug");
-            }
             mapP1[p1Array[i] - 1] = p2Array[i];
             mapP2[p2Array[i] - 1] = p1Array[i];
         }
@@ -93,27 +92,40 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
+                // if the mapping is already exists in existing mapping, redirect to that
+                for (; mapP1[temp - 1] != -1; ) {
+                    temp = mapP1[temp - 1];
+                }
                 p1copy[i] = temp;
             }
             temp = mapP2[p1Array[i] - 1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
+                for (; mapP2[temp - 1] != -1; ) {
+                    temp = mapP2[temp - 1];
+                }
                 p2copy[i] = temp;
             }
         }
 
-        for (int i = cutpoint_2; i < n; i++) {
+        for (int i = cutpoint_2 + 1; i < n; i++) {
             int temp = mapP1[p2Array[i] - 1];
             if (temp == -1) {
                 p1copy[i] = p2Array[i];
             } else {
+                for (; mapP1[temp - 1] != -1; ) {
+                    temp = mapP1[temp - 1];
+                }
                 p1copy[i] = temp;
             }
             temp = mapP2[p1Array[i] - 1];
             if (temp == -1) {
                 p2copy[i] = p1Array[i];
             } else {
+                for (; mapP2[temp - 1] != -1; ) {
+                    temp = mapP2[temp - 1];
+                }
                 p2copy[i] = temp;
             }
         }
