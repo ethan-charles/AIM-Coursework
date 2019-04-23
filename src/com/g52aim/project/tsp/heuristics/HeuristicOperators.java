@@ -29,8 +29,10 @@ public class HeuristicOperators {
         this.random = random;
     }
 
-    public int getExponentialTimes(double strength) {
-        // base 2
+    public int getQuadraticTimes(double strength) {
+        /**
+         * get the number of times in quadratic fashion (2^n)
+         */
         int times = 0;
 
         if (strength >= 0 && strength < 0.2) {
@@ -50,6 +52,9 @@ public class HeuristicOperators {
     }
 
     public int getIncrementalTimes(double strength) {
+        /**
+         * get the number of times in increment fashion (+1)
+         */
         int times = 0;
 
         if (strength >= 0 && strength < 0.2) {
@@ -69,12 +74,20 @@ public class HeuristicOperators {
     }
 
     protected void ActualAdjacentSwap(int[] array, int index) {
-        // validation check of boundary index
+        /**
+         * Swap the current index with the next index element
+         - the array is passed by reference
+         - operation done directly so is faster
+         */
+
+
+        // do validation check of boundary index
+        // set the next index to 0 if current index is the end index
         int nextIndex = index + 1;
         if (index == array.length - 1) {
             nextIndex = 0;
         }
-        // swap
+        // swapping
         int temp = array[index];
         array[index] = array[nextIndex];
         array[nextIndex] = temp;
@@ -88,6 +101,7 @@ public class HeuristicOperators {
 
 
     protected void shuffleArray(int[] ar) {
+        // Fisher–Yates shuffle, runs in O(n)
         for (int i = ar.length - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
             // Simple swap
