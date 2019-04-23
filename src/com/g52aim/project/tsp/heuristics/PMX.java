@@ -19,7 +19,7 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
 
         // invalid operation, return the same solution!
-        return -1;
+        return solution.getObjectiveFunctionValue();
     }
 
     @Override

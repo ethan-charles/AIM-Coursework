@@ -48,7 +48,7 @@ public class TSPSolution implements TSPSolutionInterface {
     @Override
     public void updateSolutionRepresentation(int[] solution) {
         /**
-         * Update the solution representation and its delta
+         * Update the solution representation
          *
          */
 
