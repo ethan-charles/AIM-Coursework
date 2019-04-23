@@ -14,16 +14,9 @@ public class TSPSolution implements TSPSolutionInterface {
 
     private int numberOfVariables;
 
-    private double delta;
-
-    // to facilitate roll back of solution
-    private int[] previousRepresentation;
-    private double previousObjectiveFunctionValue;
-
-
     public TSPSolution(SolutionRepresentationInterface representation, double objectiveFunctionValue, int numberOfVariables, ObjectiveFunctionInterface f) {
-
         this.representation = representation;
+        // set the previous representation, it is the representation initially
         this.objectiveFunctionValue = objectiveFunctionValue;
         this.numberOfVariables = numberOfVariables;
         this.f = f;
@@ -44,11 +37,6 @@ public class TSPSolution implements TSPSolutionInterface {
     }
 
     @Override
-    public double getDeltaValue() {
-        return this.delta;
-    }
-
-    @Override
     public SolutionRepresentationInterface getSolutionRepresentation() {
 
         // CHECK
@@ -59,20 +47,47 @@ public class TSPSolution implements TSPSolutionInterface {
     // update on existing solution
     @Override
     public void updateSolutionRepresentation(int[] solution) {
-        // keep track of these so it is less expensive to roll back to previous solution
-        this.previousRepresentation = this.representation.getSolutionRepresentation();
-        this.previousObjectiveFunctionValue = this.objectiveFunctionValue;
+        /**
+         * Update the solution representation and its delta
+         *
+         */
 
+        // update
+        // compute the delta value before actually overriding the current with new representation
+        double delta = computeDeltaValue(solution);
+
+        // set the new representation
         this.representation.setSolutionRepresentation(solution);
-        // set the delta, so it can retrieved easier
-        this.delta = computeDeltaValue(solution);
-        this.setObjectiveFunctionValue(this.objectiveFunctionValue + this.delta);
+        // set the new objective function value
+        this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
+
+        printSolutionRepresentation(solution);
     }
+
+    @Override
+    public void updateSolutionRepresentationWithDelta(int[] solution, double delta) {
+
+        // set the new representation
+        this.representation.setSolutionRepresentation(solution);
+        // set the new objective function value
+        this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
+
+        printSolutionRepresentation(solution);
+    }
+
+    private void printSolutionRepresentation(int[] solution) {
+        for (int i = 0; i < solution.length; i++) {
+            System.out.printf("%d ", solution[i]);
+        }
+        System.out.println("");
+    }
+
 
     @Override
     public double computeDeltaValue(int[] solution) {
         // to get the computed cost difference between new and old solution
         // pass in the previous solution representation
+        System.out.println("compute not necessarily update: " + this.f.computeDeltaFunctionValue(this.representation.getSolutionRepresentation(), solution));
         return this.f.computeDeltaFunctionValue(this.representation.getSolutionRepresentation(), solution);
     }
 
@@ -89,10 +104,5 @@ public class TSPSolution implements TSPSolutionInterface {
 
         // CHECK
         return this.getSolutionRepresentation().getNumberOfCities();
-    }
-
-    public void rollBackSolution() {
-        this.representation.setSolutionRepresentation(this.previousRepresentation);
-        this.objectiveFunctionValue = this.previousObjectiveFunctionValue;
     }
 }

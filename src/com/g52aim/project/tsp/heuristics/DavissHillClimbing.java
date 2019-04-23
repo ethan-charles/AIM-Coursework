@@ -33,6 +33,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 
         for (int i = 0; i < times; i++) {
             int[] shuffledList = orderList.clone();
+            // shuffle the array
             shuffleArray(shuffledList);
             ActualDHC(solution, shuffledList);
         }
@@ -44,16 +45,14 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
         int n = solutionRepresentation.length;
 
         for (int i = 0; i < n; i++) {
-            // will have to clone the array, because this is linked to the actual solution array
+            // will have to clone the array, so it doesn't change
             int[] clonedRepresentation = solutionRepresentation.clone();
             ActualAdjacentSwap(clonedRepresentation, orderList[i]);
-            solution.updateSolutionRepresentation(clonedRepresentation);
+            double newDelta = solution.computeDeltaValue(clonedRepresentation);
 
-            // the delta value is previously being update by new solution
-            if (solution.getDeltaValue() >= 0) {
-                // if strict improvement, immediately accept the solution
-                // else revert back to previous solution
-                solution.rollBackSolution();
+            // improve or equal
+            if (newDelta >= 0) {
+                solution.updateSolutionRepresentationWithDelta(clonedRepresentation, newDelta);
             }
         }
     }

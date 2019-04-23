@@ -41,12 +41,11 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
             int[] clonedRepresentation = solutionRepresentation.clone();
             ActualAdjacentSwap(clonedRepresentation, i);
 
-            // use the delta function
-            double delta = solution.computeDeltaValue(clonedRepresentation);
+            double newDelta = solution.computeDeltaValue(clonedRepresentation);
 
-            // the more negative, the better the improvement
-            if (delta < 0) {
-                solution.updateSolutionRepresentation(clonedRepresentation);
+            // improve or equal
+            if (newDelta >= 0) {
+                solution.updateSolutionRepresentationWithDelta(clonedRepresentation, newDelta);
             }
         }
     }
