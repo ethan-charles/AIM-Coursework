@@ -21,18 +21,19 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
         System.out.println("Heuristic: Reinsertion");
 
         int times = getIncrementalTimes(intensityOfMutation);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
 
 
+        int n = array.length;
         // performs reinsertion of n times
+
         for (int i = 0; i < times; i++) {
             // generate two unique index, one to select the inserted element and one to select the reinserted position
-            int n = array.length;
             int removedPosition = random.nextInt(n);
             int insertPosition;
             for (insertPosition = random.nextInt(n); removedPosition == insertPosition; ) {
                 // continue until a different index is generated
-                insertPosition = this.random.nextInt(n);
+                insertPosition = random.nextInt(n);
             }
 
             int temp = array[removedPosition];

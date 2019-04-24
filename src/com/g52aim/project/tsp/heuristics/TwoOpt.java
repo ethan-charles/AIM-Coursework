@@ -20,18 +20,22 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
         System.out.println("Heuristic: Two Opt");
         // CHECK implementation of two-opt swap heuristic
         int times = getIncrementalTimes(iom);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
+        int n = array.length;
 
         // performs two-opt swaps of n times
         for (int i = 0; i < times; i++) {
-            // need checking
-            int[] randomIndexes = random.ints(0, array.length).distinct().limit(2).toArray();
-            int firstCity = randomIndexes[0];
-            int secondCity = randomIndexes[1];
+            int firstIndex = random.nextInt(n);
+            int secondIndex;
+            for (secondIndex = random.nextInt(n); firstIndex == secondIndex; ) {
+                // continue until a different index is generated
+                secondIndex = random.nextInt(n);
+            }
+
             // swap
-            int temp = array[firstCity];
-            array[firstCity] = array[secondCity];
-            array[secondCity] = temp;
+            int temp = array[firstIndex];
+            array[firstIndex] = array[secondIndex];
+            array[secondIndex] = temp;
         }
 
         // set to the new solution

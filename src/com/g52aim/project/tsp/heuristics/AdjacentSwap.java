@@ -21,7 +21,7 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 
         // CHECK implementation of adjacent swap
         int times = getQuadraticTimes(intensityOfMutation);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
 
         // performs adjacent swaps of n times
         for (int i = 0; i < times; i++) {
