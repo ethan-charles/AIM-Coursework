@@ -32,10 +32,19 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         int[] p2Array = p2.getSolutionRepresentation().getSolutionRepresentation();
         int times = getIncrementalTimes(intensityOfMutation);
         int[][] childTuple;
+        int n = p1.getNumberOfCities();
+
         for (int i = 0; i < times; i++) {
             p1Array = p1Array.clone();
             p2Array = p2Array.clone();
-            childTuple = ActualOX(p1Array, p2Array);
+            int cutpoint_1 = this.random.nextInt(n);
+            int cutpoint_2;
+            for (cutpoint_2 = this.random.nextInt(n); cutpoint_2 == cutpoint_1; ) {
+                // continue until a different index is generated
+                cutpoint_2 = this.random.nextInt(n);
+            }
+
+            childTuple = ActualOX(p1Array, p2Array, cutpoint_1, cutpoint_2);
             //  reassigning reference
             p1Array = childTuple[0];
             p2Array = childTuple[1];
@@ -49,15 +58,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         return c.getObjectiveFunctionValue();
     }
 
-    private int[][] ActualOX(int[] p1Array, int[] p2Array) {
+    private int[][] ActualOX(int[] p1Array, int[] p2Array, int cutpoint_1, int cutpoint_2) {
         int n = p1Array.length;
-
-        int cutpoint_1 = this.random.nextInt(n);
-        int cutpoint_2;
-        for (cutpoint_2 = this.random.nextInt(n); cutpoint_2 == cutpoint_1; ) {
-            // continue until a different index is generated
-            cutpoint_2 = this.random.nextInt(n);
-        }
 
         int numberOfPointsWillStay;
         if (cutpoint_2 < cutpoint_1) {
@@ -65,8 +67,6 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             cutpoint_1 = cutpoint_2;
             cutpoint_2 = numberOfPointsWillStay;
         }
-
-
         numberOfPointsWillStay = cutpoint_2 - cutpoint_1;
         // skip the process when cutpoint1 and cutpoint2 is first and last indices
         if (numberOfPointsWillStay == n - 1) {
@@ -106,8 +106,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         System.arraycopy(p1Array, 0, a, (n - 1) - cutpoint_2, cutpoint_2 + 1);
 
         int[] b = new int[n];
-        System.arraycopy(p1Array, cutpoint_2 + 1, b, 0, (n - 1) - cutpoint_2);
-        System.arraycopy(p1Array, 0, b, (n - 1) - cutpoint_2, cutpoint_2 + 1);
+        System.arraycopy(p2Array, cutpoint_2 + 1, b, 0, (n - 1) - cutpoint_2);
+        System.arraycopy(p2Array, 0, b, (n - 1) - cutpoint_2, cutpoint_2 + 1);
 
 
         //  copy from p1Copy to child2
