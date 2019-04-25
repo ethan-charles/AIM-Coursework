@@ -4,6 +4,8 @@ import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
 import com.g52aim.project.tsp.interfaces.SolutionRepresentationInterface;
 import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
+import static java.lang.Math.abs;
+
 public class TSPSolution implements TSPSolutionInterface {
 
     private SolutionRepresentationInterface representation;
@@ -73,6 +75,11 @@ public class TSPSolution implements TSPSolutionInterface {
         // set the new objective function value
         this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
 
+        // check
+        double correct = f.getObjectiveFunctionValue(getSolutionRepresentation());
+        if (abs(this.objectiveFunctionValue - correct) > 0.2) {
+            System.out.println("pause");
+        }
         printSolutionRepresentation(solution);
     }
 
@@ -106,26 +113,74 @@ public class TSPSolution implements TSPSolutionInterface {
     public double computeDeltaReinsertion(int[] newSolution, int removalPoint, int insertionPoint) {
         int[] previousSolution = getSolutionRepresentation().getSolutionRepresentation();
         double delta = 0;
+        int n = this.getNumberOfCities();
+
+        // the cities to cities are not altered if removal and insertion each occurs at both end
+        if (abs(removalPoint - insertionPoint) == n - 1) {
+            return delta;
+        }
+
 
         // removal point neighbours index
         int[] neighboursIndexR = findLeftRightIndex(removalPoint);
         // insertion point neighbours index
         int[] neighboursIndexI = findLeftRightIndex(insertionPoint);
 
+        // if inserting adjacently
+        int adjacencyCheck = removalPoint - insertionPoint;
+        if (adjacencyCheck == -1) {
+            // where removal is at left and insert at right
+            int leftCity = previousSolution[neighboursIndexR[0]];
+            int rightCity = previousSolution[neighboursIndexI[1]];
+            int removedCity = previousSolution[removalPoint];
+            int replacedCity = previousSolution[neighboursIndexR[1]];
+
+            delta -= (
+                    f.getCost(leftCity, removedCity) +
+                            f.getCost(replacedCity, rightCity)
+            );
+            // add right edge from removal point
+            delta += (
+                    f.getCost(removedCity, rightCity) +
+                            f.getCost(replacedCity, leftCity)
+            );
+            return delta;
+        } else if (adjacencyCheck == 1) {
+            // where removal is at right and insert at left
+            int leftCity = previousSolution[neighboursIndexI[0]];
+            int rightCity = previousSolution[neighboursIndexR[1]];
+            int removedCity = previousSolution[removalPoint];
+            int replacedCity = previousSolution[neighboursIndexR[0]];
+
+            delta -= (
+                    f.getCost(removedCity, rightCity) +
+                            f.getCost(replacedCity, leftCity)
+            );
+            // add right edge from removal point
+            delta += (
+                    f.getCost(leftCity, removedCity) +
+                            f.getCost(replacedCity, rightCity)
+            );
+            return delta;
+        }
+
         // deduct the cost of the removed element
         // deduct the cost of the element (which its position will be taken by the removed element)
         // and its left neighbour
         delta -= (
-                f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[0]]) +
+                // removed point and its left neighbour
+                f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[0]]) +// removed point and its left neighbour
+                        // removed point and its right neighbour
                         f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[1]]) +
+                        // inserted position
                         f.getCost(previousSolution[neighboursIndexI[0]], previousSolution[insertionPoint])
         );
         // add new cost of which the inserted element with new neighbours
         delta += (
                 f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[0]]) +
-                        f.getCost(newSolution[removalPoint], newSolution[neighboursIndexI[1]])
+                        f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[1]]) +
+                        f.getCost(previousSolution[neighboursIndexR[0]], previousSolution[neighboursIndexR[1]])
         );
-
         return delta;
     }
 
@@ -148,15 +203,17 @@ public class TSPSolution implements TSPSolutionInterface {
 
         // remove edge from nextSwapPoint to right
         // remove edge from left to swapPoint
+        int[] previousSolution = getSolutionRepresentation().getSolutionRepresentation();
+
         delta -= (
-                f.getCost(newSolution[swapPoint], newSolution[left]) +
-                        f.getCost(newSolution[nextSwapPoint], newSolution[right])
+                f.getCost(previousSolution[swapPoint], previousSolution[left]) +
+                        f.getCost(previousSolution[nextSwapPoint], previousSolution[right])
         );
 
         // add edge from swapPoint to right
         // add edge from left to nextSwapPoint
-        delta += (f.getCost(newSolution[nextSwapPoint], newSolution[left]) +
-                f.getCost(newSolution[swapPoint], newSolution[right])
+        delta += (f.getCost(newSolution[swapPoint], newSolution[left]) +
+                f.getCost(newSolution[nextSwapPoint], newSolution[right])
         );
 
         return delta;
@@ -164,16 +221,17 @@ public class TSPSolution implements TSPSolutionInterface {
 
     @Override
     public double computeDeltaTwoOpt(int[] newSolution, int firstSwapPoint, int secondSwapPoint) {
+        int[] prevSolution = this.getSolutionRepresentation().getSolutionRepresentation();
         int[] neighboursFirstSwapPoint = findLeftRightIndex(firstSwapPoint);
         int[] neighboursSecondSwapPoint = findLeftRightIndex(secondSwapPoint);
 
         double delta = 0;
 
         delta -= (
-                f.getCost(newSolution[secondSwapPoint], newSolution[neighboursFirstSwapPoint[0]]) +
-                        f.getCost(newSolution[secondSwapPoint], newSolution[neighboursFirstSwapPoint[1]]) +
-                        f.getCost(newSolution[firstSwapPoint], newSolution[neighboursSecondSwapPoint[0]]) +
-                        f.getCost(newSolution[firstSwapPoint], newSolution[neighboursSecondSwapPoint[1]])
+                f.getCost(prevSolution[secondSwapPoint], prevSolution[neighboursSecondSwapPoint[0]]) +
+                        f.getCost(prevSolution[secondSwapPoint], prevSolution[neighboursSecondSwapPoint[1]]) +
+                        f.getCost(prevSolution[firstSwapPoint], prevSolution[neighboursFirstSwapPoint[0]]) +
+                        f.getCost(prevSolution[firstSwapPoint], prevSolution[neighboursFirstSwapPoint[1]])
         );
 
         delta += (
