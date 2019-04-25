@@ -73,7 +73,7 @@ public class HeuristicOperators {
         return times;
     }
 
-    protected void ActualAdjacentSwap(int[] array, int index) {
+    protected int ActualAdjacentSwap(int[] array, int index) {
         /**
          * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
          */
@@ -89,6 +89,9 @@ public class HeuristicOperators {
         int temp = array[index];
         array[index] = array[nextIndex];
         array[nextIndex] = temp;
+
+        // return next index so this can be used in the delta function
+        return nextIndex;
     }
 
     public void setObjectiveFunction(ObjectiveFunctionInterface f) {

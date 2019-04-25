@@ -27,8 +27,8 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
         for (int counter = 0; counter < times; counter++) {
             int swapPoint = random.nextInt(n);
             solutionArray = solutionArray.clone();
-            ActualAdjacentSwap(solutionArray, swapPoint);
-            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint, nextSwapPoint);
             solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
         return solution.getObjectiveFunctionValue();

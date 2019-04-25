@@ -48,9 +48,10 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
             // will have to clone the array, so it doesn't change
             solutionArray = solutionArray.clone();
             int swapPoint = orderList[index];
-            ActualAdjacentSwap(solutionArray, swapPoint);
 
-            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint, nextSwapPoint);
+
             if (delta < 0) {
                 //  only accept the new representation if has negative changes of cost
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);

@@ -39,9 +39,9 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
         int n = solution.getNumberOfCities();
         for (int index = 0; index < n; index++) {
             solutionArray = solutionArray.clone();
-            ActualAdjacentSwap(solutionArray, index);
 
-            double delta = solution.computeDeltaAdjSwap(solutionArray, index);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, index);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, index, nextSwapPoint);
             if (delta < 0) {
                 //  only accept the new representation if has negative changes of cost
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);

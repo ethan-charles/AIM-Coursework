@@ -23,5 +23,4 @@ public interface ObjectiveFunctionInterface {
      */
     public double getCost(int location_a, int location_b);
 
-    public double computeDeltaFunctionValue(int[] previousSolution, int[] newSolution);
 }

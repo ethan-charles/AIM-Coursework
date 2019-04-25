@@ -12,34 +12,34 @@ public class TSPSolution implements TSPSolutionInterface {
 
     private ObjectiveFunctionInterface f;
 
-    private int numberOfVariables;
+    private int arra;
 
     public TSPSolution(SolutionRepresentationInterface representation, double objectiveFunctionValue, int numberOfVariables, ObjectiveFunctionInterface f) {
         this.representation = representation;
         // set the previous representation, it is the representation initially
         this.objectiveFunctionValue = objectiveFunctionValue;
-        this.numberOfVariables = numberOfVariables;
+        this.arra = numberOfVariables;
         this.f = f;
     }
 
     @Override
     public double getObjectiveFunctionValue() {
 
-        // CHECK
+        // CHECKED
         return this.objectiveFunctionValue;
     }
 
     @Override
     public void setObjectiveFunctionValue(double objectiveFunctionValue) {
 
-        // CHECK
+        // CHECKED
         this.objectiveFunctionValue = objectiveFunctionValue;
     }
 
     @Override
     public SolutionRepresentationInterface getSolutionRepresentation() {
 
-        // CHECK
+        // CHECKED
         return this.representation;
     }
 
@@ -49,24 +49,25 @@ public class TSPSolution implements TSPSolutionInterface {
     public void updateSolutionRepresentation(int[] solution) {
         /**
          * Update the solution representation
+         * With recalculation of total cost
          *
          */
 
-        // update
-        // compute the delta value before actually overriding the current with new representation
-        double delta = computeDeltaValue(solution);
-
         // set the new representation
-        this.representation.setSolutionRepresentation(solution);
+        this.getSolutionRepresentation().setSolutionRepresentation(solution);
+
         // set the new objective function value
-        this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
+        this.setObjectiveFunctionValue(f.getObjectiveFunctionValue(this.getSolutionRepresentation()));
 
         printSolutionRepresentation(solution);
     }
 
     @Override
     public void updateSolutionRepresentationWithDelta(int[] solution, double delta) {
-
+        /**
+         * Update representation with delta that has been computed
+         * so there's no need to recalculate the cost again
+         */
         // set the new representation
         this.representation.setSolutionRepresentation(solution);
         // set the new objective function value
@@ -75,34 +76,128 @@ public class TSPSolution implements TSPSolutionInterface {
         printSolutionRepresentation(solution);
     }
 
-    private void printSolutionRepresentation(int[] solution) {
+    public void printSolutionRepresentation(int[] solution) {
         for (int i = 0; i < solution.length; i++) {
             System.out.printf("%d ", solution[i]);
         }
-        System.out.println("");
+        System.out.println();
     }
 
+    private int[] findLeftRightIndex(int point) {
+        // left index to  point
+        int left;
+        // right index to  point
+        int right;
+
+        if (point == 0) {
+            left = this.getNumberOfCities() - 1;
+            right = point + 1;
+        } else if (point == this.getNumberOfCities() - 1) {
+            left = point - 1;
+            right = 0;
+        } else {
+            left = point - 1;
+            right = point + 1;
+        }
+        return new int[]{left, right};
+    }
 
     @Override
-    public double computeDeltaValue(int[] solution) {
-        // to get the computed cost difference between new and old solution
-        // pass in the previous solution representation
-        System.out.println("compute not necessarily update: " + this.f.computeDeltaFunctionValue(this.representation.getSolutionRepresentation(), solution));
-        return this.f.computeDeltaFunctionValue(this.representation.getSolutionRepresentation(), solution);
+    public double computeDeltaReinsertion(int[] newSolution, int removalPoint, int insertionPoint) {
+        int[] previousSolution = getSolutionRepresentation().getSolutionRepresentation();
+        double delta = 0;
+
+        // removal point neighbours index
+        int[] neighboursIndexR = findLeftRightIndex(removalPoint);
+        // insertion point neighbours index
+        int[] neighboursIndexI = findLeftRightIndex(insertionPoint);
+
+        // deduct the cost of the removed element
+        // deduct the cost of the element (which its position will be taken by the removed element)
+        // and its left neighbour
+        delta -= (
+                f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[0]]) +
+                        f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[1]]) +
+                        f.getCost(previousSolution[neighboursIndexI[0]], previousSolution[insertionPoint])
+        );
+        // add new cost of which the inserted element with new neighbours
+        delta += (
+                f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[0]]) +
+                        f.getCost(newSolution[removalPoint], newSolution[neighboursIndexI[1]])
+        );
+
+        return delta;
+    }
+
+    @Override
+    public double computeDeltaAdjSwap(int[] newSolution, int swapPoint, int nextSwapPoint) {
+        double delta = 0;
+        int left;
+        int right;
+
+        if (swapPoint == 0) {
+            left = this.getNumberOfCities() - 1;
+        } else {
+            left = swapPoint - 1;
+        }
+        if (nextSwapPoint == this.getNumberOfCities() - 1) {
+            right = 0;
+        } else {
+            right = nextSwapPoint + 1;
+        }
+
+        // remove edge from nextSwapPoint to right
+        // remove edge from left to swapPoint
+        delta -= (
+                f.getCost(newSolution[swapPoint], newSolution[left]) +
+                        f.getCost(newSolution[nextSwapPoint], newSolution[right])
+        );
+
+        // add edge from swapPoint to right
+        // add edge from left to nextSwapPoint
+        delta += (f.getCost(newSolution[nextSwapPoint], newSolution[left]) +
+                f.getCost(newSolution[swapPoint], newSolution[right])
+        );
+
+        return delta;
+    }
+
+    @Override
+    public double computeDeltaTwoOpt(int[] newSolution, int firstSwapPoint, int secondSwapPoint) {
+        int[] neighboursFirstSwapPoint = findLeftRightIndex(firstSwapPoint);
+        int[] neighboursSecondSwapPoint = findLeftRightIndex(secondSwapPoint);
+
+        double delta = 0;
+
+        delta -= (
+                f.getCost(newSolution[secondSwapPoint], newSolution[neighboursFirstSwapPoint[0]]) +
+                        f.getCost(newSolution[secondSwapPoint], newSolution[neighboursFirstSwapPoint[1]]) +
+                        f.getCost(newSolution[firstSwapPoint], newSolution[neighboursSecondSwapPoint[0]]) +
+                        f.getCost(newSolution[firstSwapPoint], newSolution[neighboursSecondSwapPoint[1]])
+        );
+
+        delta += (
+                f.getCost(newSolution[firstSwapPoint], newSolution[neighboursFirstSwapPoint[0]]) +
+                        f.getCost(newSolution[firstSwapPoint], newSolution[neighboursFirstSwapPoint[1]]) +
+                        f.getCost(newSolution[secondSwapPoint], newSolution[neighboursSecondSwapPoint[0]]) +
+                        f.getCost(newSolution[secondSwapPoint], newSolution[neighboursSecondSwapPoint[1]])
+        );
+
+        return delta;
     }
 
     @Override
     public TSPSolutionInterface clone() {
-
-        // CHECK
+        // CHECKED
+        // would actually clone the underlying representation (int[])
         SolutionRepresentationInterface newRepresentation = this.representation.clone();
-        return new TSPSolution(newRepresentation, this.objectiveFunctionValue, this.numberOfVariables, this.f);
+        // create a new solution
+        return new TSPSolution(newRepresentation, this.objectiveFunctionValue, this.arra, this.f);
     }
 
     @Override
     public int getNumberOfCities() {
-
-        // CHECK
+        // CHECKED
         return this.getSolutionRepresentation().getNumberOfCities();
     }
 }

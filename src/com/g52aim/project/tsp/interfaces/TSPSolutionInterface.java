@@ -16,6 +16,15 @@ public interface TSPSolutionInterface extends Cloneable {
 
     public void updateSolutionRepresentationWithDelta(int[] solution, double delta);
 
-    public double computeDeltaValue(int[] solution);
+    // delta function for specific operator
+    public double computeDeltaReinsertion(int[] newSolution, int removalPoint, int insertionPoint);
+
+    public double computeDeltaAdjSwap(int[] newSolution, int swapPoint, int nextSwapPoint);
+
+    public double computeDeltaTwoOpt(int[] newSolution, int firstSwapPoint, int secondSwapPoint);
+
+    // public double computeDeltaXO(int[] newSolution, int firstCutPoint, int secondCutPoint);
+
+    public void printSolutionRepresentation(int[] solution);
 
 }
