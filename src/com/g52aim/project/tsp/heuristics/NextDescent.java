@@ -25,7 +25,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
         // CHECK implementation of Next Descent using adjacent swap for the
         int times = getIncrementalTimes(dos);
 
-        for (int i = 0; i < times; i++) {
+        for (int counter = 0; counter < times; counter++) {
             ActualNextDescent(solution);
         }
         return solution.getObjectiveFunctionValue();
@@ -34,18 +34,17 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
     private void ActualNextDescent(TSPSolutionInterface solution) {
         // don't ever update the solution find delta only, update means accept the solution
-        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
         // have to clone
         int n = solution.getNumberOfCities();
-        for (int i = 0; i < n; i++) {
-            int[] clonedRepresentation = solutionRepresentation.clone();
-            ActualAdjacentSwap(clonedRepresentation, i);
+        for (int index = 0; index < n; index++) {
+            solutionArray = solutionArray.clone();
+            ActualAdjacentSwap(solutionArray, index);
 
-            double newDelta = solution.computeDeltaValue(clonedRepresentation);
-
-            // improve or equal
-            if (newDelta >= 0) {
-                solution.updateSolutionRepresentationWithDelta(clonedRepresentation, newDelta);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, index);
+            if (delta < 0) {
+                //  only accept the new representation if has negative changes of cost
+                solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
             }
         }
     }

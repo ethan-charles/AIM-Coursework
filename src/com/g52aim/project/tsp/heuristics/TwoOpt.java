@@ -20,27 +20,36 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
         System.out.println("Heuristic: Two Opt");
         // CHECK implementation of two-opt swap heuristic
         int times = getIncrementalTimes(iom);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
-        int n = array.length;
+        int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int n = solution.getNumberOfCities();
 
         // performs two-opt swaps of n times
         for (int i = 0; i < times; i++) {
-            int firstIndex = random.nextInt(n);
-            int secondIndex;
-            for (secondIndex = random.nextInt(n); firstIndex == secondIndex; ) {
+            int firstSwapPoint = random.nextInt(n);
+            int secondSwapPoint;
+            for (secondSwapPoint = random.nextInt(n); firstSwapPoint == secondSwapPoint; ) {
                 // continue until a different index is generated
-                secondIndex = random.nextInt(n);
+                secondSwapPoint = random.nextInt(n);
             }
+            solutionArray = solutionArray.clone();
+            ActualTwoOpt(solutionArray, firstSwapPoint, secondSwapPoint);
 
-            // swap
-            int temp = array[firstIndex];
-            array[firstIndex] = array[secondIndex];
-            array[secondIndex] = temp;
+            // compute the delta
+            double delta = solution.computeDeltaTwoOpt(solutionArray, firstSwapPoint, secondSwapPoint);
+            // set the new representation and new objective value
+            solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
 
-        // set to the new solution
-        solution.updateSolutionRepresentation(array);
         return solution.getObjectiveFunctionValue();
+    }
+
+    private void ActualTwoOpt(int[] solutionArray, int firstSwapPoint, int secondSwapPoint) {
+        /**
+         * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
+         */
+        int temp = solutionArray[firstSwapPoint];
+        solutionArray[firstSwapPoint] = solutionArray[secondSwapPoint];
+        solutionArray[secondSwapPoint] = temp;
     }
 
     /*

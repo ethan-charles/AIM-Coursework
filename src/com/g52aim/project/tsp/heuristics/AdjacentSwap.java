@@ -21,16 +21,16 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 
         // CHECK implementation of adjacent swap
         int times = getQuadraticTimes(intensityOfMutation);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
+        int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int n = solution.getNumberOfCities();
 
-        // performs adjacent swaps of n times
-        for (int i = 0; i < times; i++) {
-            int firstCity = random.nextInt(array.length);
-            ActualAdjacentSwap(array, firstCity);
+        for (int counter = 0; counter < times; counter++) {
+            int swapPoint = random.nextInt(n);
+            solutionArray = solutionArray.clone();
+            ActualAdjacentSwap(solutionArray, swapPoint);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint);
+            solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
-
-        // set to the new solution
-        solution.updateSolutionRepresentation(array);
         return solution.getObjectiveFunctionValue();
     }
 

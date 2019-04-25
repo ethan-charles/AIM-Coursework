@@ -31,7 +31,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
             orderList[i] = i;
         }
 
-        for (int i = 0; i < times; i++) {
+        for (int counter = 0; counter < times; counter++) {
             int[] shuffledList = orderList.clone();
             // shuffle the array
             shuffleArray(shuffledList);
@@ -41,18 +41,19 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     }
 
     private void ActualDHC(TSPSolutionInterface solution, int[] orderList) {
-        int[] solutionRepresentation = solution.getSolutionRepresentation().getSolutionRepresentation();
-        int n = solutionRepresentation.length;
+        int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
+        int n = solution.getNumberOfCities();
 
-        for (int i = 0; i < n; i++) {
+        for (int index = 0; index < n; index++) {
             // will have to clone the array, so it doesn't change
-            int[] clonedRepresentation = solutionRepresentation.clone();
-            ActualAdjacentSwap(clonedRepresentation, orderList[i]);
-            double newDelta = solution.computeDeltaValue(clonedRepresentation);
+            solutionArray = solutionArray.clone();
+            int swapPoint = orderList[index];
+            ActualAdjacentSwap(solutionArray, swapPoint);
 
-            // improve or equal
-            if (newDelta >= 0) {
-                solution.updateSolutionRepresentationWithDelta(clonedRepresentation, newDelta);
+            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint);
+            if (delta < 0) {
+                //  only accept the new representation if has negative changes of cost
+                solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
             }
         }
     }

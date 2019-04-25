@@ -75,17 +75,15 @@ public class HeuristicOperators {
 
     protected void ActualAdjacentSwap(int[] array, int index) {
         /**
-         * Swap the current index with the next index element
-         - the array is passed by reference
-         - operation done directly so is faster
+         * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
          */
-
-
         // do validation check of boundary index
         // set the next index to 0 if current index is the end index
-        int nextIndex = index + 1;
+        int nextIndex;
         if (index == array.length - 1) {
             nextIndex = 0;
+        } else {
+            nextIndex = index + 1;
         }
         // swapping
         int temp = array[index];

@@ -21,38 +21,47 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
         System.out.println("Heuristic: Reinsertion");
 
         int times = getIncrementalTimes(intensityOfMutation);
-        int[] array = solution.getSolutionRepresentation().getSolutionRepresentation().clone();
+        int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
+        // previous solution array used to calculate the delta value
+        int n = solution.getNumberOfCities();
 
-
-        int n = array.length;
-        // performs reinsertion of n times
-
-        for (int i = 0; i < times; i++) {
-            // generate two unique index, one to select the inserted element and one to select the reinserted position
-            int removedPosition = random.nextInt(n);
-            int insertPosition;
-            for (insertPosition = random.nextInt(n); removedPosition == insertPosition; ) {
+        for (int counter = 0; counter < times; counter++) {
+            int removalPoint = random.nextInt(n);
+            int insertionPoint;
+            for (insertionPoint = random.nextInt(n); removalPoint == insertionPoint; ) {
                 // continue until a different index is generated
-                insertPosition = random.nextInt(n);
+                insertionPoint = random.nextInt(n);
             }
+            solutionArray = solutionArray.clone();
+            ActualReinsertion(solutionArray, insertionPoint, removalPoint);
 
-            int temp = array[removedPosition];
-            int[] tempArray = new int[array.length];
-
-            // remove at removed position
-            // copy without the removed element
-            System.arraycopy(array, 0, tempArray, 0, removedPosition);
-            System.arraycopy(array, removedPosition + 1, tempArray, removedPosition, n - removedPosition - 1);
-
-            // insert at insert position
-            System.arraycopy(tempArray, 0, array, 0, insertPosition);
-            System.arraycopy(tempArray, insertPosition, array, insertPosition + 1, n - insertPosition - 1);
-            array[insertPosition] = temp;
+            // compute the delta
+            double delta = solution.computeDeltaReinsertion(solutionArray, removalPoint, insertionPoint);
+            // set the new representation and new objective value
+            solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
 
-        // set to the new solution
-        solution.updateSolutionRepresentation(array);
         return solution.getObjectiveFunctionValue();
+    }
+
+    private void ActualReinsertion(int[] solutionArray, int insertionPoint, int removalPoint) {
+        /**
+         * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
+         */
+        int removedElement = solutionArray[removalPoint];
+        // create a temp array to facilitate the insertion process
+        int[] tempArray = new int[solutionArray.length];
+        int n = solutionArray.length;
+
+        // remove at removed position
+        // copy without the removed element
+        System.arraycopy(solutionArray, 0, tempArray, 0, removalPoint);
+        System.arraycopy(solutionArray, removalPoint + 1, tempArray, removalPoint, n - removalPoint - 1);
+
+        // insert at insert position
+        System.arraycopy(tempArray, 0, solutionArray, 0, insertionPoint);
+        System.arraycopy(tempArray, insertionPoint, solutionArray, insertionPoint + 1, n - insertionPoint - 1);
+        solutionArray[insertionPoint] = removedElement;
     }
 
     /*
