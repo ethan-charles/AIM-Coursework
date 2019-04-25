@@ -33,11 +33,10 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         int times = getIncrementalTimes(intensityOfMutation);
         int[][] childTuple;
         for (int i = 0; i < times; i++) {
-            int[] p1clone = p1Array.clone();
-            int[] p2clone = p1Array.clone();
-            // pass value not reference
-            childTuple = ActualOX(p1clone, p2clone);
-            // reassigning reference
+            p1Array = p1Array.clone();
+            p2Array = p2Array.clone();
+            childTuple = ActualOX(p1Array, p2Array);
+            //  reassigning reference
             p1Array = childTuple[0];
             p2Array = childTuple[1];
         }
@@ -79,7 +78,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
 
         int ele;
         int pointOfInsertion;
-//        act as temp parent
+        //  act as temp parent
         int[] child1 = p1Array.clone();
         int[] child2 = p2Array.clone();
         // "nullify" the location index of staying element, so they will not get considered later
@@ -99,9 +98,9 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             locationOfEle = locationList_p1[ele - 1];
             p1Array[locationOfEle] = -1;
         }
-//         copy to a temp array to rearrange structure
-//        be inclusive
-//        handle the case when cutpoint is at border
+        //  copy to a temp array to rearrange structure
+        //  be inclusive
+        //  handle the case when cutpoint is at border
         int[] a = new int[n];
         System.arraycopy(p1Array, cutpoint_2 + 1, a, 0, (n - 1) - cutpoint_2);
         System.arraycopy(p1Array, 0, a, (n - 1) - cutpoint_2, cutpoint_2 + 1);
@@ -111,8 +110,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         System.arraycopy(p1Array, 0, b, (n - 1) - cutpoint_2, cutpoint_2 + 1);
 
 
-        // copy from p1Copy to child2
-//        dont copy if some1[counter] is -1, else retrieve value a[counter]
+        //  copy from p1Copy to child2
+        //  dont copy if some1[counter] is -1, else retrieve value a[counter]
         int counter = 0;
         for (int i = 0; i < cutpoint_1; i++) {
             ele = a[counter];
@@ -133,7 +132,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             counter++;
         }
 
-        // now copy from p2Copy to child1
+        //  now copy from p2Copy to child1
         counter = 0;
         for (int i = 0; i < cutpoint_1; i++) {
             ele = b[counter];
@@ -158,9 +157,9 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
     }
 
     private static int[] listLocationOfElement(int[] array) {
-        // index corresponds to the element
-        // the element corresponds to the location (index)
-        // used to find the location of in a less expensive way
+        //  index corresponds to the element
+        //  the element corresponds to the location (index)
+        //  used to find the location of in a less expensive way
         int[] locationList = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             locationList[array[i] - 1] = i;
