@@ -45,6 +45,9 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
             if (delta < 0) {
                 //  only accept the new representation if has negative changes of cost
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
+            } else {
+                //  revert back the representation
+                solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
     }

@@ -171,16 +171,25 @@ public class TSPSolution implements TSPSolutionInterface {
                 // removed point and its left neighbour
                 f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[0]]) +// removed point and its left neighbour
                         // removed point and its right neighbour
-                        f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[1]]) +
-                        // inserted position
-                        f.getCost(previousSolution[neighboursIndexI[0]], previousSolution[insertionPoint])
+                        f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[1]])
         );
         // add new cost of which the inserted element with new neighbours
         delta += (
                 f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[0]]) +
-                        f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[1]]) +
-                        f.getCost(previousSolution[neighboursIndexR[0]], previousSolution[neighboursIndexR[1]])
+                        f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[1]])
         );
+        if (adjacencyCheck > 0) {
+            //  removal is on relative right
+            delta += (
+                    -f.getCost(previousSolution[neighboursIndexI[0]], previousSolution[insertionPoint]) +
+                            f.getCost(previousSolution[neighboursIndexR[0]], previousSolution[neighboursIndexR[1]])
+            );
+        } else {
+            delta += (
+                    -f.getCost(previousSolution[neighboursIndexI[1]], previousSolution[insertionPoint]) +
+                            f.getCost(previousSolution[neighboursIndexR[0]], previousSolution[neighboursIndexR[1]])
+            );
+        }
         return delta;
     }
 
