@@ -2,6 +2,7 @@ package com.g52aim.project.tsp.hyperheuristics;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.g52aim.project.tsp.G52AIMTSP;
 import com.g52aim.project.tsp.SolutionPrinter;
@@ -21,7 +22,6 @@ public class SR_IE_HH extends HyperHeuristic {
     protected void solve(ProblemDomain problem) {
 
         problem.initialiseSolution(0);
-        problem.initialiseSolution(1);
         double current = problem.getFunctionValue(0);
 
         problem.setIntensityOfMutation(0.2);
@@ -32,18 +32,14 @@ public class SR_IE_HH extends HyperHeuristic {
         boolean accept;
         System.out.println("Iteration\tf(s)\tf(s')\tAccept");
 
-        while (!hasTimeExpired()) {
+        while(!hasTimeExpired()) {
 
             h = rng.nextInt(problem.getNumberOfHeuristics());
-            double candidate = Double.MAX_VALUE;
-            if (h < 5) {
-                candidate = problem.applyHeuristic(h, 0, 1);
-            } else {
-                candidate = problem.applyHeuristic(h, 0, 1, 1);
-            }
+            double candidate = problem.applyHeuristic(h, 0, 1);
 
             accept = candidate <= current;
-            if (accept) {
+            if(accept) {
+
                 problem.copySolution(1, 0);
                 current = candidate;
             }
@@ -53,9 +49,9 @@ public class SR_IE_HH extends HyperHeuristic {
         }
 
         int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
-        ArrayList<Location> routeLocations = new ArrayList<>();
+        List<Location> routeLocations = new ArrayList<>();
 
-        for (int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
+        for(int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
             routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
         }
         SolutionPrinter.printSolution(routeLocations);
