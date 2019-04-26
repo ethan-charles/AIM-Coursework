@@ -153,7 +153,8 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             counter++;
         }
 
-        return new int[][]{child1, child2};
+        // invert the sequence
+        return new int[][]{child2, child1};
     }
 
     private static int[] listLocationOfElement(int[] array) {
