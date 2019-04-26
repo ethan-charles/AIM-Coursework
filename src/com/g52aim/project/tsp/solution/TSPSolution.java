@@ -75,17 +75,12 @@ public class TSPSolution implements TSPSolutionInterface {
         // set the new objective function value
         this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
 
-        // check
-        double correct = f.getObjectiveFunctionValue(getSolutionRepresentation());
-        if (abs(this.objectiveFunctionValue - correct) > 0.2) {
-            System.out.println("pause");
-        }
         printSolutionRepresentation(solution);
     }
 
     public void printSolutionRepresentation(int[] solution) {
-        for (int i = 0; i < solution.length; i++) {
-            System.out.printf("%d ", solution[i]);
+        for (int city : solution) {
+            System.out.printf("%d ", city);
         }
         System.out.println();
     }
@@ -115,25 +110,29 @@ public class TSPSolution implements TSPSolutionInterface {
         double delta = 0;
         int n = this.getNumberOfCities();
 
-        // the cities to cities are not altered if removal and insertion each occurs at both end
+        //  the cities to cities are not altered if removal and insertion each occurs at both end
+        //  so return delta=0
         if (abs(removalPoint - insertionPoint) == n - 1) {
-            return delta;
+            return 0;
         }
 
-
-        // removal point neighbours index
+        //  removal point neighbours index
         int[] neighboursIndexR = findLeftRightIndex(removalPoint);
-        // insertion point neighbours index
+        //  insertion point neighbours index
         int[] neighboursIndexI = findLeftRightIndex(insertionPoint);
 
-        // if inserting adjacently
-        int adjacencyCheck = removalPoint - insertionPoint;
-        if (adjacencyCheck == -1) {
+
+        int distanceFromRemovalToInsertion = removalPoint - insertionPoint;
+
+        // commonly used point
+        int removedCity = previousSolution[removalPoint];
+        int replacedCity = previousSolution[insertionPoint];
+
+        // check if inserting adjacently
+        if (distanceFromRemovalToInsertion == -1) {
             // where removal is at left and insert at right
             int leftCity = previousSolution[neighboursIndexR[0]];
             int rightCity = previousSolution[neighboursIndexI[1]];
-            int removedCity = previousSolution[removalPoint];
-            int replacedCity = previousSolution[neighboursIndexR[1]];
 
             delta -= (
                     f.getCost(leftCity, removedCity) +
@@ -145,12 +144,10 @@ public class TSPSolution implements TSPSolutionInterface {
                             f.getCost(replacedCity, leftCity)
             );
             return delta;
-        } else if (adjacencyCheck == 1) {
+        } else if (distanceFromRemovalToInsertion == 1) {
             // where removal is at right and insert at left
             int leftCity = previousSolution[neighboursIndexI[0]];
             int rightCity = previousSolution[neighboursIndexR[1]];
-            int removedCity = previousSolution[removalPoint];
-            int replacedCity = previousSolution[neighboursIndexR[0]];
 
             delta -= (
                     f.getCost(removedCity, rightCity) +
@@ -169,16 +166,16 @@ public class TSPSolution implements TSPSolutionInterface {
         // and its left neighbour
         delta -= (
                 // removed point and its left neighbour
-                f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[0]]) +// removed point and its left neighbour
+                f.getCost(removedCity, previousSolution[neighboursIndexR[0]]) +// removed point and its left neighbour
                         // removed point and its right neighbour
-                        f.getCost(previousSolution[removalPoint], previousSolution[neighboursIndexR[1]])
+                        f.getCost(removedCity, previousSolution[neighboursIndexR[1]])
         );
         // add new cost of which the inserted element with new neighbours
         delta += (
-                f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[0]]) +
-                        f.getCost(newSolution[insertionPoint], newSolution[neighboursIndexI[1]])
+                f.getCost(removedCity, newSolution[neighboursIndexI[0]]) +
+                        f.getCost(removedCity, newSolution[neighboursIndexI[1]])
         );
-        if (adjacencyCheck > 0) {
+        if (distanceFromRemovalToInsertion > 0) {
             //  removal is on relative right
             delta += (
                     -f.getCost(previousSolution[neighboursIndexI[0]], previousSolution[insertionPoint]) +
