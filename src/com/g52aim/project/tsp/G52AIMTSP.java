@@ -46,9 +46,6 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         // set solutions array to default size of 2
         this.solutions = new TSPSolution[2];
         // initialise array of low-level heuristics
-        // HeuristicInterface[] mutationOperators = new HeuristicInterface[]{new AdjacentSwap(rng), new TwoOpt(rng), new Reinsertion(rng)};
-        // HeuristicInterface[] localSearchOperators = new HeuristicInterface[]{new NextDescent(rng), new DavissHillClimbing(rng)};
-        // HeuristicInterface[] crossoverOperators = new HeuristicInterface[]{new OX(rng), new PMX(rng),};
         heuristics = new HeuristicInterface[]{new AdjacentSwap(rng), new TwoOpt(rng), new Reinsertion(rng), new NextDescent(rng), new DavissHillClimbing(rng),
                 new OX(rng), new PMX(rng),
         };
@@ -78,6 +75,9 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         double objectiveValue = heuristics[hIndex].apply(solutionCopy, dos, iom);
         // places the resulting solution at position candidateIndex
         solutions[candidateIndex] = solutionCopy;
+        if (objectiveValue < best_solution_value){
+            updateBestSolution(candidateIndex);
+        }
         return objectiveValue;
     }
 
@@ -87,7 +87,11 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         // CHECK - apply heuristic and return the objective value of the candidate solution
         double dos = rng.nextDouble();
         double iom = rng.nextDouble();
-        return ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
+        double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
+        if (objectiveValue < best_solution_value){
+            updateBestSolution(candidateIndex);
+        }
+        return objectiveValue;
     }
 
     @Override
@@ -213,6 +217,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
         // CHECK - make sure that you also update the best solution!
         solutions[index] = instance.createSolution(InitialisationMode.RANDOM);
+        solutions[index].printSolutionRepresentation(solutions[index].getSolutionRepresentation().getSolutionRepresentation());
         double currentFitness = getFunctionValue(index);
         if (currentFitness < this.best_solution_value) {
             this.updateBestSolution(index);
