@@ -9,7 +9,6 @@ import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 /**
  * @author Warren G. Jackson
  * <p>
- * TODO you can add any common functionality here
  * to save having to re-implement them in all
  * your other heuristics!
  * ( swapping two cities seems to be popular )
@@ -33,9 +32,9 @@ public class HeuristicOperators {
         /**
          * get the number of times in quadratic fashion (2^n)
          */
+        // CHECKED
         int times = 0;
-
-        if (strength >= 0 && strength < 0.2) {
+        if (strength < 0.2) {
             times = 1;
         } else if (strength < 0.4) {
             times = 2;
@@ -45,7 +44,8 @@ public class HeuristicOperators {
             times = 8;
         } else if (strength < 1.0) {
             times = 16;
-        } else if (strength == 1.0) {
+        } else {
+            // if strength == 1.0
             times = 32;
         }
         return times;
@@ -55,9 +55,10 @@ public class HeuristicOperators {
         /**
          * get the number of times in increment fashion (+1)
          */
+        // CHECKED
         int times = 0;
 
-        if (strength >= 0 && strength < 0.2) {
+        if (strength < 0.2) {
             times = 1;
         } else if (strength < 0.4) {
             times = 2;
@@ -67,7 +68,8 @@ public class HeuristicOperators {
             times = 4;
         } else if (strength < 1.0) {
             times = 5;
-        } else if (strength == 1.0) {
+        } else {
+            // if strength == 1.0
             times = 6;
         }
         return times;
@@ -96,12 +98,13 @@ public class HeuristicOperators {
 
     public void setObjectiveFunction(ObjectiveFunctionInterface f) {
 
-        // CHECK store the objective function so we can use it later!
+        // CHECKED store the objective function so we can use it later!
         this.f = f;
     }
 
 
     protected void shuffleArray(int[] ar) {
+        // CHECKED
         // Fisher–Yates shuffle, runs in O(n)
         for (int i = ar.length - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);

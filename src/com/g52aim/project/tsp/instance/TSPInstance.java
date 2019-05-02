@@ -26,6 +26,7 @@ public class TSPInstance implements TSPInstanceInterface {
         this.numberOfCities = numberOfCities;
         this.random = random;
         this.locations = locations;
+        f = new TSPObjectiveFunction(this);
     }
 
     @Override
@@ -35,8 +36,7 @@ public class TSPInstance implements TSPInstanceInterface {
         if (mode == InitialisationMode.RANDOM) {
             int[] array = random.ints(1, getNumberOfCities() + 1).distinct().limit(getNumberOfCities()).toArray();
             SolutionRepresentation representation = new SolutionRepresentation(array);
-            f = new TSPObjectiveFunction(this);
-            solutions = new TSPSolution(representation, f.getObjectiveFunctionValue(representation), getNumberOfCities(), f);
+            solutions = new TSPSolution(representation, f.getObjectiveFunctionValue(representation), getNumberOfCities());
         }
         return solutions;
     }

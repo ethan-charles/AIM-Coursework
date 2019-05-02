@@ -35,7 +35,7 @@ public class TwoOpt extends HeuristicOperators implements HeuristicInterface {
             ActualTwoOpt(solutionArray, firstSwapPoint, secondSwapPoint);
 
             // compute the delta
-            double delta = solution.computeDeltaTwoOpt(solutionArray, firstSwapPoint, secondSwapPoint);
+            double delta = f.computeDeltaTwoOpt(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, firstSwapPoint, secondSwapPoint);
             // set the new representation and new objective value
             solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }

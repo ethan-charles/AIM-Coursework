@@ -23,4 +23,10 @@ public interface ObjectiveFunctionInterface {
      */
     public double getCost(int location_a, int location_b);
 
+    // delta function for specific operator
+    public double computeDeltaReinsertion(int[] previousSolution, int[] newSolution, int removalPoint, int insertionPoint);
+
+    public double computeDeltaAdjSwap(int[] previousSolution, int[] newSolution, int swapPoint, int nextSwapPoint);
+
+    public double computeDeltaTwoOpt(int[] previousSolution, int[] newSolution, int firstSwapPoint, int secondSwapPoint);
 }

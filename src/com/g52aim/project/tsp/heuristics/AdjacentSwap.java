@@ -3,6 +3,7 @@ package com.g52aim.project.tsp.heuristics;
 import java.util.Random;
 
 import com.g52aim.project.tsp.interfaces.HeuristicInterface;
+import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
 import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
 /**
@@ -28,12 +29,16 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
             int swapPoint = random.nextInt(n);
             solutionArray = solutionArray.clone();
             int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint);
-            double delta = solution.computeDeltaAdjSwap(solutionArray, swapPoint, nextSwapPoint);
+            double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, swapPoint, nextSwapPoint);
             solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
         return solution.getObjectiveFunctionValue();
     }
 
+    @Override
+    public void setObjectiveFunction(ObjectiveFunctionInterface f) {
+        super.setObjectiveFunction(f);
+    }
     /*
      * CHECK update the methods below to return the correct boolean value.
      */

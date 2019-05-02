@@ -30,9 +30,10 @@ public class CrossoverHeuristicOperators {
         /**
          * get the number of times in increment fashion (+1)
          */
+        // CHECKED
         int times = 0;
 
-        if (strength >= 0 && strength < 0.2) {
+        if (strength < 0.2) {
             times = 1;
         } else if (strength < 0.4) {
             times = 2;
@@ -42,7 +43,8 @@ public class CrossoverHeuristicOperators {
             times = 4;
         } else if (strength < 1.0) {
             times = 5;
-        } else if (strength == 1.0) {
+        } else {
+            // if strength == 1.0
             times = 6;
         }
         return times;
@@ -50,7 +52,7 @@ public class CrossoverHeuristicOperators {
 
     public void setObjectiveFunction(ObjectiveFunctionInterface f) {
 
-        // CHECK store the objective function so we can use it later!
+        // CHECKED store the objective function so we can use it later!
         this.f = f;
     }
 }

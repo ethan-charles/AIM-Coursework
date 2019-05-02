@@ -36,7 +36,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
             ActualReinsertion(solutionArray, insertionPoint, removalPoint);
 
             // compute the delta
-            double delta = solution.computeDeltaReinsertion(solutionArray, removalPoint, insertionPoint);
+            double delta = f.computeDeltaReinsertion(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, removalPoint, insertionPoint);
             // set the new representation and new objective value
             solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
