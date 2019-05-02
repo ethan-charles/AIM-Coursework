@@ -20,27 +20,23 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
         System.out.println("Heuristic: Adjacent Swap");
 
-        // CHECK implementation of adjacent swap
+        // CHECKED implementation of adjacent swap
         int times = getQuadraticTimes(intensityOfMutation);
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
-        int n = solution.getNumberOfCities();
+        int numberOfCities = solution.getNumberOfCities();
 
         for (int counter = 0; counter < times; counter++) {
-            int swapPoint = random.nextInt(n);
+            int swapPoint = random.nextInt(numberOfCities);
             solutionArray = solutionArray.clone();
-            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint, numberOfCities);
             double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, swapPoint, nextSwapPoint);
             solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
         }
         return solution.getObjectiveFunctionValue();
     }
 
-    @Override
-    public void setObjectiveFunction(ObjectiveFunctionInterface f) {
-        super.setObjectiveFunction(f);
-    }
     /*
-     * CHECK update the methods below to return the correct boolean value.
+     * CHECKED update the methods below to return the correct boolean value.
      */
 
     @Override

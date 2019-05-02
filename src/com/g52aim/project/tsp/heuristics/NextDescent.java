@@ -22,7 +22,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
         System.out.println("Heuristic: Next Descent");
 
-        // CHECK implementation of Next Descent using adjacent swap for the
+        // CHECKED implementation of Next Descent using adjacent swap for the
         int times = getIncrementalTimes(dos);
 
         for (int counter = 0; counter < times; counter++) {
@@ -33,20 +33,21 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
 
     private void ActualNextDescent(TSPSolutionInterface solution) {
-        // don't ever update the solution find delta only, update means accept the solution
+        // CHECKED
+
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
         // have to clone
-        int n = solution.getNumberOfCities();
-        for (int index = 0; index < n; index++) {
+        int numberOfCities = solution.getNumberOfCities();
+        for (int index = 0; index < numberOfCities; index++) {
             solutionArray = solutionArray.clone();
 
-            int nextSwapPoint = ActualAdjacentSwap(solutionArray, index);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, index, numberOfCities);
             double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, index, nextSwapPoint);
             if (delta < 0) {
-                //  only accept the new representation if has negative changes of cost
+                //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
             } else {
-                //  revert back the representation
+                //  revert pointing back to the representation
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }

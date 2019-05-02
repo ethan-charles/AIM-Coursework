@@ -3,7 +3,6 @@ package com.g52aim.project.tsp.heuristics;
 import java.util.Random;
 
 import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
-import com.g52aim.project.tsp.interfaces.TSPSolutionInterface;
 
 
 /**
@@ -75,14 +74,16 @@ public class HeuristicOperators {
         return times;
     }
 
-    protected int ActualAdjacentSwap(int[] array, int index) {
+    protected int ActualAdjacentSwap(int[] array, int index, int numberOfCities) {
         /**
          * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
          */
+        // CHECKED
+
         // do validation check of boundary index
         // set the next index to 0 if current index is the end index
         int nextIndex;
-        if (index == array.length - 1) {
+        if (index == numberOfCities - 1) {
             nextIndex = 0;
         } else {
             nextIndex = index + 1;

@@ -17,20 +17,20 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
 
     @Override
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
-        // CHECK implementation of reinsertion heuristic
+        // CHECKED implementation of reinsertion heuristic
         System.out.println("Heuristic: Reinsertion");
 
         int times = getIncrementalTimes(intensityOfMutation);
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
         // previous solution array used to calculate the delta value
-        int n = solution.getNumberOfCities();
+        int numberOfCities = solution.getNumberOfCities();
 
         for (int counter = 0; counter < times; counter++) {
-            int removalPoint = random.nextInt(n);
+            int removalPoint = random.nextInt(numberOfCities);
             int insertionPoint;
-            for (insertionPoint = random.nextInt(n); removalPoint == insertionPoint; ) {
+            for (insertionPoint = random.nextInt(numberOfCities); removalPoint == insertionPoint; ) {
                 // continue until a different index is generated
-                insertionPoint = random.nextInt(n);
+                insertionPoint = random.nextInt(numberOfCities);
             }
             solutionArray = solutionArray.clone();
             ActualReinsertion(solutionArray, insertionPoint, removalPoint);
@@ -48,6 +48,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
         /**
          * Caveat: the operation occurs directly on the array due to passed by reference, cloning may required
          */
+        // CHECKED
         int removedElement = solutionArray[removalPoint];
         // create a temp array to facilitate the insertion process
         int[] tempArray = new int[solutionArray.length];
@@ -65,7 +66,7 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
     }
 
     /*
-     * CHECK update the methods below to return the correct boolean value.
+     * CHECKED update the methods below to return the correct boolean value.
      */
 
     @Override

@@ -21,7 +21,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
         System.out.println("Heuristic: Daviss Hill");
 
-        // CHECK implement Davis's Hill Climbing using adjacent swaps
+        // CHECKED implement Davis's Hill Climbing using adjacent swaps
 
         int times = getIncrementalTimes(dos);
 
@@ -41,19 +41,20 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
     }
 
     private void ActualDHC(TSPSolutionInterface solution, int[] orderList) {
+        // CHECKED
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
-        int n = solution.getNumberOfCities();
+        int numberOfCities = solution.getNumberOfCities();
 
-        for (int index = 0; index < n; index++) {
+        for (int index = 0; index < numberOfCities; index++) {
             // will have to clone the array, so it doesn't change
             solutionArray = solutionArray.clone();
             int swapPoint = orderList[index];
 
-            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint);
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, swapPoint, numberOfCities);
             double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, swapPoint, nextSwapPoint);
 
-            if (delta < 0) {
-                //  only accept the new representation if has negative changes of cost
+            if (delta <= 0) {
+                //  persist the new representation if improving or equal solution
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
             } else {
                 //  revert back the representation

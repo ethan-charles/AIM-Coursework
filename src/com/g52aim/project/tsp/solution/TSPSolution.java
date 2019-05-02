@@ -54,6 +54,8 @@ public class TSPSolution implements TSPSolutionInterface {
          *
          */
 
+        // CHECKED
+
         // set the new representation
         this.getSolutionRepresentation().setSolutionRepresentation(solution);
 

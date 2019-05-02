@@ -7,7 +7,6 @@ import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
 /**
  * @author Warren G. Jackson
  * <p>
- * TODO you can add any common functionality here
  * to save having to re-implement them in all
  * your other heuristics!
  * <p>
