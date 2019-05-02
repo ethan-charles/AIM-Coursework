@@ -60,8 +60,6 @@ public class TSPSolution implements TSPSolutionInterface {
 
         // set the new objective function value
         this.setObjectiveFunctionValue(f.getObjectiveFunctionValue(this.getSolutionRepresentation()));
-
-        printSolutionRepresentation(solution);
     }
 
     @Override
@@ -74,8 +72,6 @@ public class TSPSolution implements TSPSolutionInterface {
         this.representation.setSolutionRepresentation(solution);
         // set the new objective function value
         this.setObjectiveFunctionValue(this.objectiveFunctionValue + delta);
-
-        printSolutionRepresentation(solution);
     }
 
     public void printSolutionRepresentation(int[] solution) {
