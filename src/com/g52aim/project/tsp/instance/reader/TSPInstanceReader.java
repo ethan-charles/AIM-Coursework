@@ -31,7 +31,7 @@ public class TSPInstanceReader implements TSPInstanceReaderInterface {
             // read line by line
             String line;
             StringTokenizer st;
-            while ((line = reader.readLine()) != "EOF") {
+            while ((line = reader.readLine()) != null) {
                 st = new StringTokenizer(line);
                 // scan for dimension
                 if (st.nextToken(" : ").equals("DIMENSION")) {
@@ -48,9 +48,8 @@ public class TSPInstanceReader implements TSPInstanceReaderInterface {
             double yCord;
             int counter = 0;
             String firstSt;
-            while (!(line = reader.readLine()).equals("EOF") && counter < numberOfCities) {
+            while ((line = reader.readLine()) != null) {
                 st = new StringTokenizer(line);
-                // can i assume?
                 // line starts with number
                 firstSt = st.nextToken();
                 if (isInteger(firstSt)) {
