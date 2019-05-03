@@ -24,13 +24,13 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
     private TSPSolutionInterface[] solutions;
 
-    public TSPSolutionInterface bestSolution;
+    private TSPSolutionInterface bestSolution;
 
     public TSPInstanceInterface instance;
 
     private HeuristicInterface[] heuristics;
 
-    double best_solution_value = Double.POSITIVE_INFINITY;
+    private double best_solution_value = Double.POSITIVE_INFINITY;
 
     ObjectiveFunctionInterface f = null;
 
@@ -64,12 +64,10 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     public double applyHeuristic(int hIndex, int currentIndex, int candidateIndex) {
 
         // CHECKED - apply heuristic and return the objective value of the candidate solution
-        double dos = rng.nextDouble();
-        double iom = rng.nextDouble();
         // get a copy
         TSPSolutionInterface solutionCopy = solutions[currentIndex].clone();
         // applying heuristic on copy
-        double objectiveValue = heuristics[hIndex].apply(solutionCopy, dos, iom);
+        double objectiveValue = heuristics[hIndex].apply(solutionCopy, this.depthOfSearch, this.intensityOfMutation);
         // places the resulting solution at position candidateIndex
         solutions[candidateIndex] = solutionCopy;
         if (objectiveValue < best_solution_value) {
@@ -82,9 +80,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     public double applyHeuristic(int hIndex, int parent1Index, int parent2Index, int candidateIndex) {
 
         // CHECKED- apply heuristic and return the objective value of the candidate solution
-        double dos = rng.nextDouble();
-        double iom = rng.nextDouble();
-        double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
+        double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], this.depthOfSearch, this.intensityOfMutation);
         if (objectiveValue < best_solution_value) {
             updateBestSolution(candidateIndex);
         }
