@@ -187,7 +187,7 @@ public class TSPObjectiveFunction implements ObjectiveFunctionInterface {
     }
 
     @Override
-    public double computeDeltaTwoOpt(int[] prevSolution, int[] newSolution, int firstSwapPoint, int secondSwapPoint) {
+    public double computeDeltaTwoOpt(int[] previousSolution, int[] newSolution, int firstSwapPoint, int secondSwapPoint) {
         int numberOfCities = this.instance.getNumberOfCities();
         int[] neighboursFirstSwapPoint = findLeftRightIndex(firstSwapPoint, numberOfCities);
         int[] neighboursSecondSwapPoint = findLeftRightIndex(secondSwapPoint, numberOfCities);
@@ -195,10 +195,10 @@ public class TSPObjectiveFunction implements ObjectiveFunctionInterface {
         double delta = 0;
 
         delta -= (
-                getCost(prevSolution[secondSwapPoint], prevSolution[neighboursSecondSwapPoint[0]]) +
-                        getCost(prevSolution[secondSwapPoint], prevSolution[neighboursSecondSwapPoint[1]]) +
-                        getCost(prevSolution[firstSwapPoint], prevSolution[neighboursFirstSwapPoint[0]]) +
-                        getCost(prevSolution[firstSwapPoint], prevSolution[neighboursFirstSwapPoint[1]])
+                getCost(previousSolution[secondSwapPoint], previousSolution[neighboursSecondSwapPoint[0]]) +
+                        getCost(previousSolution[secondSwapPoint], previousSolution[neighboursSecondSwapPoint[1]]) +
+                        getCost(previousSolution[firstSwapPoint], previousSolution[neighboursFirstSwapPoint[0]]) +
+                        getCost(previousSolution[firstSwapPoint], previousSolution[neighboursFirstSwapPoint[1]])
         );
 
         delta += (

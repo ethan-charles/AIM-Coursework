@@ -63,7 +63,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
         }
     }
     /*
-     * CHECK update the methods below to return the correct boolean value.
+     * CHECKED update the methods below to return the correct boolean value.
      */
 
     @Override

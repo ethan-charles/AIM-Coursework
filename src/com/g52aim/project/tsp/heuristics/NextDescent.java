@@ -54,7 +54,7 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
     }
 
     /*
-     * CHECK update the methods below to return the correct boolean value.
+     * CHECKED update the methods below to return the correct boolean value.
      */
     @Override
     public boolean isCrossover() {

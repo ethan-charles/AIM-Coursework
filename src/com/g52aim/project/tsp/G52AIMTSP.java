@@ -6,8 +6,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
-
 import AbstractClasses.HyperHeuristic;
 import com.g52aim.project.tsp.heuristics.*;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
@@ -15,7 +13,6 @@ import com.g52aim.project.tsp.instance.InitialisationMode;
 import com.g52aim.project.tsp.instance.Location;
 import com.g52aim.project.tsp.instance.reader.TSPInstanceReader;
 import com.g52aim.project.tsp.interfaces.*;
-
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.solution.TSPSolution;
 
@@ -41,7 +38,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
         super(seed);
 
-        // CHECK - set default memory size and create the array of low-level heuristics
+        // CHECKED - set default memory size and create the array of low-level heuristics
 
         // set solutions array to default size of 2
         this.solutions = new TSPSolution[2];
@@ -53,20 +50,20 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
     public TSPSolutionInterface getSolution(int index) {
 
-        // CHECK
+        // CHECKED
         return this.solutions[index];
     }
 
     public TSPSolutionInterface getBestSolution() {
 
-        // CHECK
+        // CHECKED
         return this.bestSolution;
     }
 
     @Override
     public double applyHeuristic(int hIndex, int currentIndex, int candidateIndex) {
 
-        // CHECK - apply heuristic and return the objective value of the candidate solution
+        // CHECKED - apply heuristic and return the objective value of the candidate solution
         double dos = rng.nextDouble();
         double iom = rng.nextDouble();
         // get a copy
@@ -75,7 +72,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         double objectiveValue = heuristics[hIndex].apply(solutionCopy, dos, iom);
         // places the resulting solution at position candidateIndex
         solutions[candidateIndex] = solutionCopy;
-        if (objectiveValue < best_solution_value){
+        if (objectiveValue < best_solution_value) {
             updateBestSolution(candidateIndex);
         }
         return objectiveValue;
@@ -84,11 +81,11 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public double applyHeuristic(int hIndex, int parent1Index, int parent2Index, int candidateIndex) {
 
-        // CHECK - apply heuristic and return the objective value of the candidate solution
+        // CHECKED- apply heuristic and return the objective value of the candidate solution
         double dos = rng.nextDouble();
         double iom = rng.nextDouble();
         double objectiveValue = ((XOHeuristicInterface) heuristics[hIndex]).apply(solutions[parent1Index], solutions[parent2Index], solutions[candidateIndex], dos, iom);
-        if (objectiveValue < best_solution_value){
+        if (objectiveValue < best_solution_value) {
             updateBestSolution(candidateIndex);
         }
         return objectiveValue;
@@ -97,7 +94,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public String bestSolutionToString() {
 
-        // CHECK
+        // CHECKED
         StringBuilder builder = new StringBuilder();
         TSPSolutionInterface solution = this.bestSolution;
         double cost = this.best_solution_value;
@@ -113,7 +110,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public boolean compareSolutions(int a, int b) {
 
-        // CHECK
+        // CHECKED
         int[] firstSolutionRepresentation = solutions[a].getSolutionRepresentation().getSolutionRepresentation();
         int[] secondSolutionRepresentation = solutions[b].getSolutionRepresentation().getSolutionRepresentation();
 
@@ -123,7 +120,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public void copySolution(int a, int b) {
 
-        // CHECK - BEWARE this should copy the solution, not the reference to it!
+        // CHECKED - BEWARE this should copy the solution, not the reference to it!
         //			That is, that if we apply a heuristic to the solution in index 'b',
         //			then it does not modify the solution in index 'a' or vice-versa.
         solutions[b] = solutions[a].clone();
@@ -132,21 +129,21 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public double getBestSolutionValue() {
 
-        // CHECK
+        // CHECKED
         return this.best_solution_value;
     }
 
     @Override
     public double getFunctionValue(int index) {
 
-        // CHECK
+        // CHECKED
         return getSolution(index).getObjectiveFunctionValue();
     }
 
     @Override
     public int[] getHeuristicsOfType(HeuristicType type) {
 
-        // CHECK
+        // CHECKED
         int[] heuristicOfTypeIndices;
         switch (type) {
             case MUTATION:
@@ -201,21 +198,21 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public int getNumberOfHeuristics() {
 
-        // CHECK - has to be hard-coded due to the design of the HyFlex framework
+        // CHECKED - has to be hard-coded due to the design of the HyFlex framework
         return 7;
     }
 
     @Override
     public int getNumberOfInstances() {
 
-        // CHECK
+        // CHECKED
         return instanceFiles.length;
     }
 
     @Override
     public void initialiseSolution(int index) {
 
-        // CHECK - make sure that you also update the best solution!
+        // CHECKED - make sure that you also update the best solution!
         solutions[index] = instance.createSolution(InitialisationMode.RANDOM);
         solutions[index].printSolutionRepresentation(solutions[index].getSolutionRepresentation().getSolutionRepresentation());
         double currentFitness = getFunctionValue(index);
@@ -230,13 +227,12 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         String SEP = FileSystems.getDefault().getSeparator();
         String instanceName = "instances" + SEP + "tsp" + SEP + instanceFiles[instanceId] + ".tsp";
 
-        // CHECK create instance reader and problem instance
+        // CHECKED create instance reader and problem instance
         // ...
         TSPInstanceReader reader = new TSPInstanceReader();
         instance = reader.readTSPInstance(Paths.get(instanceName), rng);
 
-        // CHECK set the objective function in each of the heuristics
-        // ...
+        // CHECKED set the objective function in each of the heuristics
         for (int i = 0; i < heuristics.length; i++) {
             heuristics[i].setObjectiveFunction(instance.getTSPObjectiveFunction());
         }
@@ -244,13 +240,14 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
     @Override
     public void setMemorySize(int size) {
-        // CHECK
+        // CHECKED
         TSPSolutionInterface[] tempSolutions = new TSPSolution[size];
         // never set new memory size if there's no current solution or the new size < 2
         if (this.solutions != null && size >= 2) {
-            int i = 0;
+            int i;
             // to prevent index out of bound
             // stop when reach the shorter array size
+            // do the migration
             if (tempSolutions.length <= this.solutions.length) {
                 for (i = 0; i < tempSolutions.length; i++) {
                     tempSolutions[i] = solutions[i];
@@ -267,7 +264,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public String solutionToString(int index) {
 
-        // CHECK
+        // CHECKED
 
         StringBuilder builder = new StringBuilder();
         TSPSolutionInterface solution = solutions[index];
@@ -284,13 +281,13 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
     @Override
     public String toString() {
 
-        // CHECK change 'PSY...' to be your username
+        // CHECKED change 'PSY...' to be your username
         return "PSYJHC's G52AIM TSP";
     }
 
     private void updateBestSolution(int index) {
 
-        // CHECK
+        // CHECKED
         // update best value and index
         this.best_solution_value = getFunctionValue(index);
         this.bestSolution = solutions[index].clone();
@@ -324,7 +321,7 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
         double best = hh.getBestSolutionValue();
         System.out.println(best);
 
-        // CHECK you will need to populate this based on your representation!
+        // CHECKED you will need to populate this based on your representation!
         List<Location> routeLocations = new ArrayList<>();
         Location[] routeLocationList = new Location[routeLocations.size()];
         routeLocations.toArray(routeLocationList);

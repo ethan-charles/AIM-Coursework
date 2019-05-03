@@ -1,10 +1,7 @@
 package com.g52aim.project.tsp.instance;
 
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.stream.IntStream;
-
 import com.g52aim.project.tsp.TSPObjectiveFunction;
 import com.g52aim.project.tsp.interfaces.ObjectiveFunctionInterface;
 import com.g52aim.project.tsp.interfaces.TSPInstanceInterface;
@@ -31,7 +28,7 @@ public class TSPInstance implements TSPInstanceInterface {
 
     @Override
     public TSPSolution createSolution(InitialisationMode mode) {
-        // CHECK
+        // CHECKED
         TSPSolution solutions = null;
         if (mode == InitialisationMode.RANDOM) {
             int[] array = random.ints(1, getNumberOfCities() + 1).distinct().limit(getNumberOfCities()).toArray();
@@ -44,21 +41,21 @@ public class TSPInstance implements TSPInstanceInterface {
     @Override
     public ObjectiveFunctionInterface getTSPObjectiveFunction() {
 
-        // CHECK
+        // CHECKED
         return this.f;
     }
 
     @Override
     public int getNumberOfCities() {
 
-        // CHECK
+        // CHECKED
         return this.numberOfCities;
     }
 
     @Override
     public Location getLocationForCity(int cityId) {
 
-        // CHECK
+        // CHECKED
         // index + 1 = cityId
         return locations[cityId - 1];
     }

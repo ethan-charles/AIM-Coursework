@@ -2,7 +2,7 @@ package com.g52aim.project.tsp.instance;
 
 
 public class Pair {
-    // location indices
+    // Pair of cities
     private final int x;
 
     private final int y;

@@ -167,7 +167,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         return locationList;
     }
     /*
-     * CHECK update the methods below to return the correct boolean value.
+     * CHECKED update the methods below to return the correct boolean value.
      */
 
     @Override
