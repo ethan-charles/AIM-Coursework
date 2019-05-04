@@ -76,7 +76,7 @@ public class SCF_ALA_HH extends HyperHeuristic {
             // accepting solution
             // accepting the solution if it is better than the current incumbent solution
             // or it is better than the threshold value
-            accept = candidate <= current || candidate <= ala.getThresholdValue();
+            accept = candidate < current || candidate < ala.getThresholdValue();
             if (accept) {
                 ala.update(candidate);
                 problem.copySolution(1, 0);

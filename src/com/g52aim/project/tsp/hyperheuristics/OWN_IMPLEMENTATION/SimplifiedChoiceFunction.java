@@ -39,7 +39,7 @@ public class SimplifiedChoiceFunction {
         int bestHeuristicIndex = 0;
         double bestHeuristicScore = -Double.MAX_VALUE;
         long timeNow = System.nanoTime();
-
+        // System.out.println("PHI:" + this.phi);
         for (int i = 0; i < heuristics.length; i++) {
             Heuristic tempHeuristic = heuristics[i];
             double tempScore = calculateScore(tempHeuristic, timeNow);
@@ -61,10 +61,10 @@ public class SimplifiedChoiceFunction {
         HeuristicData Hdata = h.getData();
         double f_delta = Hdata.getF_delta();
 
-        double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration();
+        double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration() / 10000;
         double f1 = this.phi * (-f_delta / this.lastImprovement * timeApplyingHeuristic);
         double lastTimeApplied = Hdata.getTimeLastApplied();
-        double timeDifference = (currentTime - lastTimeApplied);
+        double timeDifference = (currentTime - lastTimeApplied) / Math.pow(10, 9);
         double f3 = (1 - this.phi) * timeDifference;
 
         double outputScore = f1 + f3;
