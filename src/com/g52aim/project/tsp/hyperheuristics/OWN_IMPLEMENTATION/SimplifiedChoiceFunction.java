@@ -6,10 +6,14 @@ public class SimplifiedChoiceFunction {
 
     private double phi;
 
-    public SimplifiedChoiceFunction(Heuristic[] heuristics) {
+    // used to normalise
+    private double lastImprovement;
+
+    public SimplifiedChoiceFunction(Heuristic[] heuristics, double initialFitness) {
 
         this.heuristics = heuristics;
         this.phi = 0.99;
+        this.lastImprovement = initialFitness;
     }
 
     public void updateHeuristicData(Heuristic heuristic, long timeApplied, long timeTaken, double current, double candidate) {
@@ -45,25 +49,26 @@ public class SimplifiedChoiceFunction {
                 bestHeuristicIndex = i;
             }
         }
-        System.out.println(bestHeuristicIndex);
         return heuristics[bestHeuristicIndex];
+    }
+
+    public void setLastImprovement(double lastImprovement) {
+        this.lastImprovement = lastImprovement;
     }
 
     public double calculateScore(Heuristic h, long currentTime) {
 
         HeuristicData Hdata = h.getData();
         double f_delta = Hdata.getF_delta();
-        double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration();
-        double lastTimeApplied = Hdata.getTimeLastApplied();
 
-        // f1 is an evaluation based on the performance of the heuristic
-        double f1 = this.phi * (- f_delta / timeApplyingHeuristic);
-        double timeDifference = (currentTime - lastTimeApplied) / Math.pow(10, 2);
-        // the f3 variable becomes more significant when improvement is not made over time
+        double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration();
+        double f1 = this.phi * (-f_delta / this.lastImprovement * timeApplyingHeuristic);
+        double lastTimeApplied = Hdata.getTimeLastApplied();
+        double timeDifference = (currentTime - lastTimeApplied);
         double f3 = (1 - this.phi) * timeDifference;
+
         double outputScore = f1 + f3;
-        // System.out.println(f_delta+ " + " + f3 + "= " + outputScore);
-        // System.out.println(f1/f3);
+        // System.out.println(f1 + " + " + f3 + "= " + outputScore);
         return outputScore;
     }
 

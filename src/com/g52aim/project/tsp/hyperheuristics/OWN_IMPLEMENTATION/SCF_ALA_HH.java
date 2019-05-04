@@ -55,9 +55,9 @@ public class SCF_ALA_HH extends HyperHeuristic {
         }
 
 
-        SimplifiedChoiceFunction scf = new SimplifiedChoiceFunction(heuristicSet);
         problem.initialiseSolution(CURRENT_SOLUTION_INDEX);
         double current = problem.getFunctionValue(CURRENT_SOLUTION_INDEX);
+        SimplifiedChoiceFunction scf = new SimplifiedChoiceFunction(heuristicSet, current);
         AverageLateAcceptance ala = new AverageLateAcceptance(this.LIST_LENGTH, current);
         double candidate;
         boolean accept;
@@ -79,7 +79,6 @@ public class SCF_ALA_HH extends HyperHeuristic {
             accept = candidate <= current || candidate <= ala.getThresholdValue();
             if (accept) {
                 ala.update(candidate);
-                // copy from candidate to current solution index
                 problem.copySolution(1, 0);
                 current = candidate;
             } else {
