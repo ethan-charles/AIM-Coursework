@@ -27,54 +27,47 @@ public class SCF_ALA_HH extends HyperHeuristic {
         // gather the heuristic index
         int[] mutationHeuristicSet = problem.getHeuristicsOfType(HeuristicType.MUTATION);
         int[] localSearchHeuristicSet = problem.getHeuristicsOfType(HeuristicType.LOCAL_SEARCH);
-        Long initialStartTime = System.nanoTime();
 
-        double[] setOfIOM = new double[]{0.2, 1.0};
-        double[] setOfDOS = new double[]{0.2, 1.0};
+        double[] strength = new double[]{0, 0.2, 0.4, 0.6, 0.8, 1.0};
 
-
-        int numberOfVariant = setOfDOS.length * setOfIOM.length;
+        int numberOfVariant = strength.length;
         Heuristic[] heuristicSet = new Heuristic[
                 mutationHeuristicSet.length * numberOfVariant +
                         localSearchHeuristicSet.length * numberOfVariant
                 ];
+        int[] heuristicStats = new int[heuristicSet.length];
+
 
         int indexCounter = 0;
-        // add mutation heuristics
+        // initialise the same starting time for all heuristics
+        long initialStartTime = System.nanoTime();
         for (int i = 0; i < mutationHeuristicSet.length; i++) {
-            for (int x = 0; x < setOfIOM.length; x++) {
-                for (int y = 0; y < setOfDOS.length; y++) {
-                    heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(setOfIOM[x], setOfDOS[y]), mutationHeuristicSet[i], initialStartTime);
-                    indexCounter++;
-                }
+            for (int j = 0; j < numberOfVariant; j++) {
+                heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(strength[j], strength[j]), mutationHeuristicSet[i], indexCounter, initialStartTime);
+                indexCounter++;
             }
         }
-        // add local search heuristic
         for (int i = 0; i < localSearchHeuristicSet.length; i++) {
-            for (int x = 0; x < setOfIOM.length; x++) {
-                for (int y = 0; y < setOfDOS.length; y++) {
-                    heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(setOfIOM[x], setOfDOS[y]), localSearchHeuristicSet[i], initialStartTime);
-                    indexCounter++;
-
-                }
+            for (int j = 0; j < numberOfVariant; j++) {
+                heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(strength[j], strength[j]), localSearchHeuristicSet[i], indexCounter, initialStartTime);
+                indexCounter++;
             }
         }
 
-        // create the 'SimplifiedChoiceFunction' and 'AverageLateAcceptance' Objects
+
         SimplifiedChoiceFunction scf = new SimplifiedChoiceFunction(heuristicSet);
         problem.initialiseSolution(CURRENT_SOLUTION_INDEX);
         double current = problem.getFunctionValue(CURRENT_SOLUTION_INDEX);
         AverageLateAcceptance ala = new AverageLateAcceptance(this.LIST_LENGTH, current);
         double candidate;
         boolean accept;
-        System.out.println("Iteration\tf(s)\tf(s')\tAccept");
         int iteration = 0;
-        while (!hasTimeExpired()) {
 
+        while (!hasTimeExpired()) {
             Heuristic heuristicToApply = scf.selectHeuristicToApply();
             problem.setDepthOfSearch(heuristicToApply.getConfiguration().getDos());
             problem.setIntensityOfMutation(heuristicToApply.getConfiguration().getIom());
-
+            heuristicStats[heuristicToApply.getUniqueId()] += 1;
             Long startTime = System.nanoTime();
             candidate = problem.applyHeuristic(heuristicToApply.getHeuristicId(), CURRENT_SOLUTION_INDEX, CANDIDATE_SOLUTION_INDEX);
             Long endTime = System.nanoTime();
@@ -83,7 +76,7 @@ public class SCF_ALA_HH extends HyperHeuristic {
             // accepting solution
             // accepting the solution if it is better than the current incumbent solution
             // or it is better than the threshold value
-            accept = candidate < current || candidate < ala.getThresholdValue();
+            accept = candidate <= current || candidate <= ala.getThresholdValue();
             if (accept) {
                 ala.update(candidate);
                 // copy from candidate to current solution index
@@ -92,8 +85,11 @@ public class SCF_ALA_HH extends HyperHeuristic {
             } else {
                 ala.update(current);
             }
-            System.out.println(iteration + "\t" + current + "\t" + candidate + "\t" + accept);
-            iteration++;
+            // System.out.println(iteration + "\t" + current + "\t" + candidate + "\t" + accept);
+            // iteration++;
+        }
+        for (int i = 0; i < heuristicStats.length; i++) {
+            System.out.println("heuristic: " + i + " " + heuristicStats[i]);
         }
     }
 
