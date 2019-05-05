@@ -44,8 +44,8 @@ public class SR_IE_HH extends HyperHeuristic {
                 current = candidate;
             }
 
-            System.out.println(iteration + "\t" + current + "\t" + candidate + "\t" + accept);
-            iteration++;
+            // System.out.println(iteration + "\t" + current + "\t" + candidate + "\t" + accept);
+            // iteration++;
         }
 
         int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();

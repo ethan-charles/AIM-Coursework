@@ -4,6 +4,7 @@ import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
 import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SCF_ALA_HH;
+import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
 
 
 public class G52AIM_Runner {
@@ -31,9 +32,11 @@ public class G52AIM_Runner {
 
     public void runTests() {
 
-        String hyperHeuristicName = null;
+        String hyperHeuristicName1 = null;
+        String hyperHeuristicName2 = null;
         String problemDomain = null;
-        double[] bestSolutionFitness_s = new double[TOTAL_RUNS];
+        double[] bestSolutionFitness_h1 = new double[TOTAL_RUNS];
+        double[] bestSolutionFitness_h2 = new double[TOTAL_RUNS];
 
         for (int domain = 0; domain < DOMAINS.length; domain++) {
 
@@ -45,26 +48,48 @@ public class G52AIM_Runner {
 
                     long seed = SEEDS[run];
 
-                    HyperHeuristic hh = new SCF_ALA_HH(seed, LIST_LENGTH);
+                    HyperHeuristic hh1 = new SCF_ALA_HH(seed, LIST_LENGTH);
                     ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                     problem.loadInstance(instanceID);
-                    hh.setTimeLimit(RUN_TIME);
-                    hh.loadProblemDomain(problem);
-                    hh.run();
+                    hh1.setTimeLimit(RUN_TIME);
+                    hh1.loadProblemDomain(problem);
+                    hh1.run();
 
-                    hyperHeuristicName = hh.toString();
+                    hyperHeuristicName1 = hh1.toString();
+                    bestSolutionFitness_h1[run] = hh1.getBestSolutionValue();
+                    System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh1.getBestSolutionValue());
+
+
+                    HyperHeuristic hh2 = new SR_IE_HH(seed);
+                    // setting up for 2nd hh
+                    problem = getNewDomain(DOMAINS[domain], seed);
+                    problem.loadInstance(instanceID);
                     problemDomain = problem.toString();
-                    bestSolutionFitness_s[run] = hh.getBestSolutionValue();
-                    System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh.getBestSolutionValue());
+                    hh2.setTimeLimit(RUN_TIME);
+                    hh2.loadProblemDomain(problem);
+                    hh2.run();
+
+                    hyperHeuristicName2 = hh2.toString();
+                    bestSolutionFitness_h2[run] = hh2.getBestSolutionValue();
+                    System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh2.getBestSolutionValue());
                 }
 
+                // saving 1st hh
                 StringBuilder sb = new StringBuilder();
-                sb.append(hyperHeuristicName + "," + RUN_TIME + "," + problemDomain + "," + instanceID);
-                for (double ofv : bestSolutionFitness_s) {
+                sb.append(hyperHeuristicName1 + "," + RUN_TIME + "," + problemDomain + "," + instanceID);
+                for (double ofv : bestSolutionFitness_h1) {
                     sb.append("," + ofv);
                 }
+                config.saveData("G52AIM_HH" + ".csv", sb.toString());
 
-                config.saveData(hyperHeuristicName + ".csv", sb.toString());
+                // saving 2nd hh
+                sb = new StringBuilder();
+                sb.append(hyperHeuristicName2 + "," + RUN_TIME + "," + problemDomain + "," + instanceID);
+                for (double ofv : bestSolutionFitness_h2) {
+                    sb.append("," + ofv);
+                }
+                config.saveData("G52AIM_HH" + ".csv", sb.toString());
+
             }
         }
     }
