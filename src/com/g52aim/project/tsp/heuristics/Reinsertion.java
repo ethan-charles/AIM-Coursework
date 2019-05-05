@@ -18,7 +18,6 @@ public class Reinsertion extends HeuristicOperators implements HeuristicInterfac
     @Override
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
         // CHECKED implementation of reinsertion heuristic
-        System.out.println("Heuristic: Reinsertion");
 
         int times = getIncrementalTimes(intensityOfMutation);
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();

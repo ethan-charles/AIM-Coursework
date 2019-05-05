@@ -25,7 +25,6 @@ public class PMX extends CrossoverHeuristicOperators implements XOHeuristicInter
     @Override
     public double apply(TSPSolutionInterface p1, TSPSolutionInterface p2,
                         TSPSolutionInterface c, double depthOfSearch, double intensityOfMutation) {
-        System.out.println("Heuristic: PMX");
 
         // CHECK implementation of ordered crossover
         int[] p1Array = p1.getSolutionRepresentation().getSolutionRepresentation().clone();

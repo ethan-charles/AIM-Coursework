@@ -18,8 +18,6 @@ public class AdjacentSwap extends HeuristicOperators implements HeuristicInterfa
 
     @Override
     public double apply(TSPSolutionInterface solution, double depthOfSearch, double intensityOfMutation) {
-        System.out.println("Heuristic: Adjacent Swap");
-
         // CHECKED implementation of adjacent swap
         int times = getQuadraticTimes(intensityOfMutation);
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();

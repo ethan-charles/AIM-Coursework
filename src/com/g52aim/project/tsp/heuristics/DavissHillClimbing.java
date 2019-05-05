@@ -19,7 +19,6 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
 
     @Override
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
-        System.out.println("Heuristic: Daviss Hill");
 
         // CHECKED implement Davis's Hill Climbing using adjacent swaps
 

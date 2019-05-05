@@ -20,7 +20,6 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
 
     @Override
     public double apply(TSPSolutionInterface solution, double dos, double iom) {
-        System.out.println("Heuristic: Next Descent");
 
         // CHECKED implementation of Next Descent using adjacent swap for the
         int times = getIncrementalTimes(dos);
