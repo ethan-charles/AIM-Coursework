@@ -7,9 +7,9 @@ import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SCF_ALA_HH;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
 
 
-public class G52AIM_Runner {
+public class Test_Runner {
 
-    final G52AIM_TestFrameConfig config;
+    final TestFrameConfig config;
 
     final int TOTAL_RUNS;
     final String[] DOMAINS;
@@ -18,7 +18,7 @@ public class G52AIM_Runner {
     final long[] SEEDS;
     final int LIST_LENGTH;
 
-    public G52AIM_Runner(G52AIM_TestFrameConfig config) {
+    public Test_Runner(TestFrameConfig config) {
 
         this.config = config;
 
@@ -60,8 +60,8 @@ public class G52AIM_Runner {
                     System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh1.getBestSolutionValue());
 
 
-                    HyperHeuristic hh2 = new SR_IE_HH(seed);
                     // setting up for 2nd hh
+                    HyperHeuristic hh2 = new SR_IE_HH(seed);
                     problem = getNewDomain(DOMAINS[domain], seed);
                     problem.loadInstance(instanceID);
                     problemDomain = problem.toString();
@@ -88,7 +88,7 @@ public class G52AIM_Runner {
                 for (double ofv : bestSolutionFitness_h2) {
                     sb.append("," + ofv);
                 }
-                config.saveData("G52AIM_HH" + ".csv", sb.toString());
+                config.saveData("Paramter_Test_HH" + ".csv", sb.toString());
 
             }
         }
@@ -111,6 +111,6 @@ public class G52AIM_Runner {
 
     public static void main(String[] args) {
 
-        new G52AIM_Runner(new G52AIM_TestFrameConfig()).runTests();
+        new Test_Runner(new TestFrameConfig()).runTests();
     }
 }

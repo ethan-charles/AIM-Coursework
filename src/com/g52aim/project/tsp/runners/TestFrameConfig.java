@@ -2,7 +2,7 @@ package com.g52aim.project.tsp.runners;
 
 import com.g52aim.project.tsp.hyflex.HyFlexTestFrame;
 
-public class G52AIM_TestFrameConfig extends HyFlexTestFrame {
+public class TestFrameConfig extends HyFlexTestFrame {
 
     protected final long RUN_TIME_IN_SECONDS = 1;
 
