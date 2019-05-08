@@ -1,4 +1,4 @@
-package com.g52aim.project.tsp.hyflex;
+package com.g52aim.project.tsp.runners;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ public abstract class HyFlexTestFrame {
 	
 	protected final long[] SEEDS;
 	
-	protected final int TOTAL_RUNS = 11;
+	protected final int TOTAL_RUNS = 4;
 	
 	protected final long MILLISECONDS_IN_TEN_MINUTES = 369_000;
 
@@ -53,7 +53,8 @@ public abstract class HyFlexTestFrame {
 				Files.createFile(path);
 				
 				//add header
-				String header = "HH,Run Time,Problem Domain,Instance ID";
+				// String header = "HH,Run Time,Problem Domain,Instance ID";
+				String header = "HH,Instance ID,List Length,Alpha";
 				for(int i = 0; i < TOTAL_RUNS; i++) {
 					
 					header += ("," + i);

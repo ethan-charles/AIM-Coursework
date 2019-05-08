@@ -1,14 +1,12 @@
 package com.g52aim.project.tsp.runners;
 
-import com.g52aim.project.tsp.hyflex.HyFlexTestFrame;
-
 public class TestFrameConfig extends HyFlexTestFrame {
 
-    protected final long RUN_TIME_IN_SECONDS = 1;
+    protected final long RUN_TIME_IN_SECONDS = 60;
 
     protected final String[] PROBLEM_DOMAINS = {"TSP"};
 
-    protected final int[][] INSTANCE_IDs = {{0, 1, 2}};
+    protected final int[][] INSTANCE_IDs = {{0}};
 
     protected final int LIST_LENGTH = 20;
 

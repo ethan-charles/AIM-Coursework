@@ -24,9 +24,9 @@ public abstract class HH_Runner_Visual {
     public void run() {
 
         long seed = 15032018l;
-        long timeLimit = 1_000l;
+        long timeLimit = 60_000l;
         G52AIMTSP problem = new G52AIMTSP(seed);
-        problem.loadInstance(4);
+        problem.loadInstance(0);
         HyperHeuristic hh = getHyperHeuristic(seed);
         hh.setTimeLimit(timeLimit);
         hh.loadProblemDomain(problem);

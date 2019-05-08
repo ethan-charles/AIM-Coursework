@@ -6,21 +6,22 @@ public class SimplifiedChoiceFunction {
 
     private double phi;
 
-    // used to normalise
-    private double lastImprovement;
+    private double lastImprovement = 1;
 
-    public SimplifiedChoiceFunction(Heuristic[] heuristics, double initialFitness) {
+    private int alpha;
+
+    public SimplifiedChoiceFunction(Heuristic[] heuristics, int alpha) {
 
         this.heuristics = heuristics;
         this.phi = 0.99;
-        this.lastImprovement = initialFitness;
+        this.alpha = alpha;
     }
 
-    public void updateHeuristicData(Heuristic heuristic, long timeApplied, long timeTaken, double current, double candidate) {
+    public void updateHeuristicData(Heuristic heuristic, long timeApplied, long timeTaken, double diff) {
 
         HeuristicData data = heuristic.getData();
         // if improve, the f_delta will be negative
-        data.setF_delta(candidate - current);
+        data.setF_delta(diff);
         data.setTimeLastApplied(timeApplied);
         data.setPreviousApplicationDuration(timeTaken);
 
@@ -39,7 +40,6 @@ public class SimplifiedChoiceFunction {
         int bestHeuristicIndex = 0;
         double bestHeuristicScore = -Double.MAX_VALUE;
         long timeNow = System.nanoTime();
-        // System.out.println("PHI:" + this.phi);
         for (int i = 0; i < heuristics.length; i++) {
             Heuristic tempHeuristic = heuristics[i];
             double tempScore = calculateScore(tempHeuristic, timeNow);
@@ -52,21 +52,21 @@ public class SimplifiedChoiceFunction {
         return heuristics[bestHeuristicIndex];
     }
 
-    public void setLastImprovement(double lastImprovement) {
-        this.lastImprovement = lastImprovement;
+    public void setLastImprovement(double improvement) {
+        this.lastImprovement = improvement;
     }
 
     public double calculateScore(Heuristic h, long currentTime) {
 
         HeuristicData Hdata = h.getData();
         double f_delta = Hdata.getF_delta();
-
+        // the 10000 is a rough estimate of the timeapplyingheuristic
         double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration() / 10000;
-        double f1 = this.phi * (-f_delta / this.lastImprovement * timeApplyingHeuristic);
+        double f1 = this.phi * (-f_delta / this.lastImprovement * timeApplyingHeuristic) * alpha;
         double lastTimeApplied = Hdata.getTimeLastApplied();
         double timeDifference = (currentTime - lastTimeApplied) / Math.pow(10, 9);
         double f3 = (1 - this.phi) * timeDifference;
-
+        // System.out.println(lastImprovement);
         double outputScore = f1 + f3;
         // System.out.println(f1 + " + " + f3 + "= " + outputScore);
         return outputScore;

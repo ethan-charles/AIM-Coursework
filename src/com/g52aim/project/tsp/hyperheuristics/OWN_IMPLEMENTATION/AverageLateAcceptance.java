@@ -20,17 +20,12 @@ public class AverageLateAcceptance {
         Arrays.fill(acceptedSolutionFitnesses, initialSolutionFitness);
         // start with index = 1, as index zero is preoccupied
         this.index = 1;
-
-        // create the array of accepted solution fitnesses and populate
-        // fill with the objective value of the initial solution
-        // initialise 'sum' to initialSolutionFitness * listLength
         sum = BigDecimal.valueOf(initialSolutionFitness * listLength);
     }
 
 
     public double getThresholdValue() {
         return this.sum.doubleValue() / this.LIST_LENGTH;
-        // return this.acceptedSolutionFitnesses[index];
     }
 
     public void update(double f) {

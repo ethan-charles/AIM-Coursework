@@ -1,5 +1,6 @@
 package com.g52aim.project.tsp.runners;
 
+import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SCF_ALA_HH;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
 
 import AbstractClasses.HyperHeuristic;
@@ -12,8 +13,9 @@ public class SR_IE_VisualRunner extends HH_Runner_Visual {
 
 	@Override
 	protected HyperHeuristic getHyperHeuristic(long seed) {
-
-		return new SR_IE_HH(seed);
+		// change the underlying hyperheuristics
+		// return new SR_IE_HH(seed);
+		return new SCF_ALA_HH(seed, 200);
 	}
 	
 	public static void main(String [] args) {
