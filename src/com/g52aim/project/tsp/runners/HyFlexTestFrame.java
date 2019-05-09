@@ -10,9 +10,9 @@ public abstract class HyFlexTestFrame {
 	
 	protected final long[] SEEDS;
 	
-	protected final int TOTAL_RUNS = 4;
+	protected final int TOTAL_RUNS = 11;
 	
-	protected final long MILLISECONDS_IN_TEN_MINUTES = 369_000;
+	protected final long MILLISECONDS_IN_TEN_MINUTES = 438_000;
 
 	public HyFlexTestFrame() {
 		
@@ -53,13 +53,13 @@ public abstract class HyFlexTestFrame {
 				Files.createFile(path);
 				
 				//add header
-				// String header = "HH,Run Time,Problem Domain,Instance ID";
-				String header = "HH,Instance ID,List Length,Alpha";
+				String header = "HH,Run Time,Problem Domain,Instance ID";
+				// String header = "HH,Instance ID,List Length,Alpha";
 				for(int i = 0; i < TOTAL_RUNS; i++) {
 					
 					header += ("," + i);
 				}
-				
+				header += ("," + "Average");
 				Files.write(path, (header + "\r\n" + data).getBytes());
 				
 			} catch (IOException e) {

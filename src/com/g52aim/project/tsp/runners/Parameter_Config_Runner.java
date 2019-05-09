@@ -31,7 +31,6 @@ public class Parameter_Config_Runner {
         this.RUN_TIME = config.getRunTime();
 
         this.LIST_LENGTH = new int[]{10, 20,  100, 200};
-        // this.LIST_LENGTH = new int[]{5, 9, 13, 17, 21, 25};
         // larger alpha gives more weight to f1
         this.ALPHA = new int[]{5, 50, 500, 5000, 50000};
     }

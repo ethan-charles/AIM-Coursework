@@ -60,16 +60,13 @@ public class SimplifiedChoiceFunction {
 
         HeuristicData Hdata = h.getData();
         double f_delta = Hdata.getF_delta();
-        // the 10000 is a rough estimate of the timeapplyingheuristic
+        // divide by 10000 to make a time unit
         double timeApplyingHeuristic = Hdata.getPreviousApplicationDuration() / 10000;
         double f1 = this.phi * (-f_delta / this.lastImprovement * timeApplyingHeuristic) * alpha;
         double lastTimeApplied = Hdata.getTimeLastApplied();
         double timeDifference = (currentTime - lastTimeApplied) / Math.pow(10, 9);
         double f3 = (1 - this.phi) * timeDifference;
-        // System.out.println(lastImprovement);
-        double outputScore = f1 + f3;
-        // System.out.println(f1 + " + " + f3 + "= " + outputScore);
-        return outputScore;
+        return f1 + f3;
     }
 
 }

@@ -16,18 +16,14 @@ public class Test_Runner {
     final int[][] INSTANCE_IDs;
     final long RUN_TIME;
     final long[] SEEDS;
-    final int LIST_LENGTH;
 
     public Test_Runner(TestFrameConfig config) {
-
         this.config = config;
-
         this.TOTAL_RUNS = config.getTotalRuns();
         this.DOMAINS = config.PROBLEM_DOMAINS;
         this.INSTANCE_IDs = config.getInstanceIDs();
         this.SEEDS = config.getSeeds();
         this.RUN_TIME = config.getRunTime();
-        this.LIST_LENGTH = config.LIST_LENGTH;
     }
 
     public void runTests() {
@@ -39,16 +35,11 @@ public class Test_Runner {
         double[] bestSolutionFitness_h2 = new double[TOTAL_RUNS];
 
         for (int domain = 0; domain < DOMAINS.length; domain++) {
-
             for (int instance = 0; instance < INSTANCE_IDs[domain].length; instance++) {
-
                 int instanceID = INSTANCE_IDs[domain][instance];
-
                 for (int run = 0; run < TOTAL_RUNS; run++) {
-
                     long seed = SEEDS[run];
-
-                    HyperHeuristic hh1 = new SCF_ALA_HH(seed, LIST_LENGTH);
+                    HyperHeuristic hh1 = new SCF_ALA_HH(seed, 50, 5);
                     ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                     problem.loadInstance(instanceID);
                     hh1.setTimeLimit(RUN_TIME);
@@ -58,7 +49,6 @@ public class Test_Runner {
                     hyperHeuristicName1 = hh1.toString();
                     bestSolutionFitness_h1[run] = hh1.getBestSolutionValue();
                     System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh1.getBestSolutionValue());
-
 
                     // setting up for 2nd hh
                     HyperHeuristic hh2 = new SR_IE_HH(seed);
@@ -77,19 +67,24 @@ public class Test_Runner {
                 // saving 1st hh
                 StringBuilder sb = new StringBuilder();
                 sb.append(hyperHeuristicName1 + "," + RUN_TIME + "," + problemDomain + "," + instanceID);
+                double average = 0;
                 for (double ofv : bestSolutionFitness_h1) {
+                    average += ofv;
                     sb.append("," + ofv);
                 }
-                config.saveData("G52AIM_HH" + ".csv", sb.toString());
+                sb.append("," + average);
+                config.saveData("G52AIM_HH4" + ".csv", sb.toString());
 
                 // saving 2nd hh
                 sb = new StringBuilder();
                 sb.append(hyperHeuristicName2 + "," + RUN_TIME + "," + problemDomain + "," + instanceID);
+                average = 0;
                 for (double ofv : bestSolutionFitness_h2) {
+                    average += ofv;
                     sb.append("," + ofv);
                 }
-                config.saveData("Paramter_Test_HH" + ".csv", sb.toString());
-
+                sb.append("," + average);
+                config.saveData("G52AIM_HH4" + ".csv", sb.toString());
             }
         }
     }
