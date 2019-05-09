@@ -3,7 +3,7 @@ package com.g52aim.project.tsp.runners;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
-import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SCF_ALA_HH;
+import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SMCF_ALA_HH;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
 
 
@@ -39,7 +39,7 @@ public class Test_Runner {
                 int instanceID = INSTANCE_IDs[domain][instance];
                 for (int run = 0; run < TOTAL_RUNS; run++) {
                     long seed = SEEDS[run];
-                    HyperHeuristic hh1 = new SCF_ALA_HH(seed, 50, 5);
+                    HyperHeuristic hh1 = new SMCF_ALA_HH(seed, 50, 50);
                     ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                     problem.loadInstance(instanceID);
                     hh1.setTimeLimit(RUN_TIME);
@@ -61,7 +61,7 @@ public class Test_Runner {
 
                     hyperHeuristicName2 = hh2.toString();
                     bestSolutionFitness_h2[run] = hh2.getBestSolutionValue();
-                    System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh2.getBestSolutionValue());
+                    // System.out.println("Instance ID: " + instanceID + "\tTrial: " + run + "\tf(s_{best}) = " + hh2.getBestSolutionValue());
                 }
 
                 // saving 1st hh
@@ -73,7 +73,7 @@ public class Test_Runner {
                     sb.append("," + ofv);
                 }
                 sb.append("," + average);
-                config.saveData("G52AIM_HH4" + ".csv", sb.toString());
+                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
 
                 // saving 2nd hh
                 sb = new StringBuilder();
@@ -84,7 +84,7 @@ public class Test_Runner {
                     sb.append("," + ofv);
                 }
                 sb.append("," + average);
-                config.saveData("G52AIM_HH4" + ".csv", sb.toString());
+                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
             }
         }
     }

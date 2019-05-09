@@ -3,7 +3,7 @@ package com.g52aim.project.tsp.runners;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
-import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SCF_ALA_HH;
+import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SMCF_ALA_HH;
 
 
 public class Parameter_Config_Runner {
@@ -50,7 +50,7 @@ public class Parameter_Config_Runner {
                     for (int k = 0; k < ALPHA.length; k++) {
                         for (int run = 0; run < TOTAL_RUNS; run++) {
                             long seed = SEEDS[run];
-                            HyperHeuristic hh = new SCF_ALA_HH(seed, LIST_LENGTH[i], ALPHA[k]);
+                            HyperHeuristic hh = new SMCF_ALA_HH(seed, LIST_LENGTH[i], ALPHA[k]);
                             ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                             problem.loadInstance(instanceID);
                             hh.setTimeLimit(RUN_TIME);

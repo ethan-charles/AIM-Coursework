@@ -1,6 +1,4 @@
 package com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION;
-
-
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import AbstractClasses.ProblemDomain.HeuristicType;
@@ -11,18 +9,18 @@ import com.g52aim.project.tsp.instance.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SCF_ALA_HH extends HyperHeuristic {
+public class SMCF_ALA_HH extends HyperHeuristic {
 
     private final int LIST_LENGTH;
     private final int ALPHA;
 
-    public SCF_ALA_HH(long seed, int listLength, int alpha) {
+    public SMCF_ALA_HH(long seed, int listLength, int alpha) {
         super(seed);
         this.LIST_LENGTH = listLength;
         this.ALPHA = alpha;
     }
 
-    public SCF_ALA_HH(long seed, int listLength) {
+    public SMCF_ALA_HH(long seed, int listLength) {
         // default settings
         super(seed);
         this.LIST_LENGTH = listLength;
@@ -82,9 +80,7 @@ public class SCF_ALA_HH extends HyperHeuristic {
             double diff = candidate - current;
             scf.updateHeuristicData(heuristicToApply, endTime, endTime - startTime, diff);
 
-            // accepting solution
             // accepting the solution if it is better than the current incumbent solution
-            // or it is better than the threshold value
             accept = candidate < current;
             if (accept) {
                 // eagerly accepting
@@ -108,18 +104,17 @@ public class SCF_ALA_HH extends HyperHeuristic {
             // iteration++;
         }
 
-        // int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
-        // List<Location> routeLocations = new ArrayList<>();
-        //
-        // for (int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
-        //     routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
-        // }
-        // SolutionPrinter.printSolution(routeLocations);
+        int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
+        List<Location> routeLocations = new ArrayList<>();
+
+        for (int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
+            routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
+        }
+        SolutionPrinter.printSolution(routeLocations);
     }
 
     public String toString() {
-
-        return "MCF_ALA_HH";
+        return "SMCF_ALA_HH";
     }
 
 }

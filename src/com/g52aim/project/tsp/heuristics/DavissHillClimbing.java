@@ -45,7 +45,7 @@ public class DavissHillClimbing extends HeuristicOperators implements HeuristicI
         int numberOfCities = solution.getNumberOfCities();
 
         for (int index = 0; index < numberOfCities; index++) {
-            // will have to clone the array, so it doesn't change
+            // will have to clone the array, so it doesn't mutate the array
             solutionArray = solutionArray.clone();
             int swapPoint = orderList[index];
 
