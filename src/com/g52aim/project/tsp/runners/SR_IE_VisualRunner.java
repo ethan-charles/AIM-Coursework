@@ -1,6 +1,6 @@
 package com.g52aim.project.tsp.runners;
 
-import com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION.SMCF_ALA_HH;
+import com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics.SMCF_ALA_HH;
 
 import AbstractClasses.HyperHeuristic;
 

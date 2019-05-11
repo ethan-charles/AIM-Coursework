@@ -1,4 +1,4 @@
-package com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION;
+package com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

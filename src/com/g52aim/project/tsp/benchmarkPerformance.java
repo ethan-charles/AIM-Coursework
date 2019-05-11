@@ -1,5 +1,7 @@
 package com.g52aim.project.tsp;
 
+import java.util.Random;
+
 public class benchmarkPerformance {
     private static int[][] ActualOX(int[] p1Array, int[] p2Array, int cutpoint_1, int cutpoint_2) {
         int n = p1Array.length;
@@ -111,15 +113,31 @@ public class benchmarkPerformance {
     }
 
     public static void main(String[] args) {
-        // int[] array1 = new int[]{1, 2, 3, 4};
-        // int[] array2 = new int[]{4, 2, 3, 1};
+        // // int[] array1 = new int[]{1, 2, 3, 4};
+        // // int[] array2 = new int[]{4, 2, 3, 1};
+        // //
+        // // int[][] result = ActualOX(array1, array2, 1, 2);
         //
-        // int[][] result = ActualOX(array1, array2, 1, 2);
-
-
-
-        System.out.println("print");
-
+        // Random rng = new Random();
+        // long start;
+        // long end;
+        // start = System.nanoTime();
+        // int[] array = new int[10];
+        // for (int i = 0; i < 10; i++) {
+        //     array[i] = i+1;
+        // }
+        // for (int i = array.length - 1; i > 0; i--) {
+        //     int index = rng.nextInt(i + 1);
+        //     // Simple swap
+        //     int a = array[index];
+        //     array[index] = array[i];
+        //     array[i] = a;
+        // }
+        // // int[] array = rng.ints(1, 10 + 1).distinct().limit(10).toArray();
+        // end = System.nanoTime();
+        // System.out.println(end - start);
+        // System.out.println("print");
+        System.out.println(-(-Double.MAX_VALUE));
     }
 
 

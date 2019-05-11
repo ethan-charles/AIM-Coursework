@@ -1,4 +1,5 @@
-package com.g52aim.project.tsp.hyperheuristics.OWN_IMPLEMENTATION;
+package com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics;
+
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import AbstractClasses.ProblemDomain.HeuristicType;
@@ -41,26 +42,35 @@ public class SMCF_ALA_HH extends HyperHeuristic {
         int[] localSearchHeuristicSet = problem.getHeuristicsOfType(HeuristicType.LOCAL_SEARCH);
 
         double[] strength = new double[]{0, 0.2, 0.4, 0.6, 0.8, 1.0};
+        int numberOfVariant = strength.length;
+        HeuristicConfiguration[] configurationList = new HeuristicConfiguration[numberOfVariant * numberOfVariant];
+
+        // populating different configuration
+        int indexCounter = 0;
+        for (double iom: strength) {
+            for (double dos: strength) {
+                configurationList[indexCounter] = new HeuristicConfiguration(iom, dos);
+                indexCounter++;
+            }
+        }
 
         // combination of heuristic with different configuration
-        int numberOfVariant = strength.length;
         Heuristic[] heuristicSet = new Heuristic[
-                mutationHeuristicSet.length * numberOfVariant +
-                        localSearchHeuristicSet.length * numberOfVariant
+                mutationHeuristicSet.length * numberOfVariant * numberOfVariant +
+                        localSearchHeuristicSet.length * numberOfVariant * numberOfVariant
                 ];
-
-        int indexCounter = 0;
+        indexCounter = 0;
         // initialise the same starting time for all heuristics
         long initialStartTime = System.nanoTime();
         for (int i = 0; i < mutationHeuristicSet.length; i++) {
-            for (int j = 0; j < numberOfVariant; j++) {
-                heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(strength[j], strength[j]), mutationHeuristicSet[i], indexCounter, initialStartTime);
+            for (HeuristicConfiguration hc : configurationList) {
+                heuristicSet[indexCounter] = new Heuristic(hc, mutationHeuristicSet[i], indexCounter, initialStartTime);
                 indexCounter++;
             }
         }
         for (int i = 0; i < localSearchHeuristicSet.length; i++) {
-            for (int j = 0; j < numberOfVariant; j++) {
-                heuristicSet[indexCounter] = new Heuristic(new HeuristicConfiguration(strength[j], strength[j]), localSearchHeuristicSet[i], indexCounter, initialStartTime);
+            for (HeuristicConfiguration hc : configurationList) {
+                heuristicSet[indexCounter] = new Heuristic(hc, localSearchHeuristicSet[i], indexCounter, initialStartTime);
                 indexCounter++;
             }
         }
