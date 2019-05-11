@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import AbstractClasses.HyperHeuristic;
 import com.g52aim.project.tsp.heuristics.*;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
@@ -19,13 +20,8 @@ import com.g52aim.project.tsp.solution.TSPSolution;
 public class G52AIMTSP extends ProblemDomain implements Visualisable {
 
     private String[] instanceFiles = {
-            "d1291", "d18512", "dj38", "usa13509", "qa194", "ch71009"
+            "d1291", "d18512", "dj38", "usa13509", "qa194", "ch71009", "T81", "pcb1173", "ch71009"
     };
-
-    // for testing purposes
-    // private String[] instanceFiles = {
-    //         "T81", "pcb1173", "ch71009"
-    // };
 
     private TSPSolutionInterface[] solutions;
 

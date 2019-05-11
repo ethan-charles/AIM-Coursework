@@ -1,10 +1,11 @@
-package com.g52aim.project.tsp.runners;
+package com.g52aim.project.tsp.runners.test_comparison;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
 import com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics.SMCF_ALA_HH;
 import com.g52aim.project.tsp.hyperheuristics.SR_IE_HH;
+import com.g52aim.project.tsp.runners.TestFrameConfig;
 
 
 public class Test_Runner {
@@ -20,7 +21,7 @@ public class Test_Runner {
     public Test_Runner(TestFrameConfig config) {
         this.config = config;
         this.TOTAL_RUNS = config.getTotalRuns();
-        this.DOMAINS = config.PROBLEM_DOMAINS;
+        this.DOMAINS = config.getDomains();
         this.INSTANCE_IDs = config.getInstanceIDs();
         this.SEEDS = config.getSeeds();
         this.RUN_TIME = config.getRunTime();
@@ -73,7 +74,7 @@ public class Test_Runner {
                     sb.append("," + ofv);
                 }
                 sb.append("," + average / 11.0);
-                config.saveData("G52AIM_HH8" + ".csv", sb.toString());
+                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
 
                 // saving 2nd hh
                 sb = new StringBuilder();
@@ -84,7 +85,7 @@ public class Test_Runner {
                     sb.append("," + ofv);
                 }
                 sb.append("," + average / 11.0);
-                config.saveData("G52AIM_HH8" + ".csv", sb.toString());
+                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
             }
         }
     }

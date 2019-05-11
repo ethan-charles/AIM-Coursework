@@ -1,9 +1,10 @@
-package com.g52aim.project.tsp.runners;
+package com.g52aim.project.tsp.runners.parameter_tuning;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
 import com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics.SMCF_ALA_HH;
+import com.g52aim.project.tsp.runners.TestFrameConfig;
 
 
 public class Parameter_Config_Runner {
@@ -25,7 +26,7 @@ public class Parameter_Config_Runner {
         this.config = config;
 
         this.TOTAL_RUNS = config.getTotalRuns();
-        this.DOMAINS = config.PROBLEM_DOMAINS;
+        this.DOMAINS = config.getDomains();
         this.INSTANCE_IDs = config.getInstanceIDs();
         this.SEEDS = config.getSeeds();
         this.RUN_TIME = config.getRunTime();

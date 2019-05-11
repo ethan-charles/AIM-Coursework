@@ -6,7 +6,7 @@ public class TestFrameConfig extends HyFlexTestFrame {
 
     protected final String[] PROBLEM_DOMAINS = {"TSP"};
 
-    protected final int[][] INSTANCE_IDs = {{1, 2}};
+    protected final int[][] INSTANCE_IDs = {{6, 7, 8}};
 
     @Override
     public String[] getDomains() {
