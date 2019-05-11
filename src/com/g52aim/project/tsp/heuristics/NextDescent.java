@@ -45,11 +45,12 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
                 //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
                 numberOfImprovement++;
-                if (numberOfImprovement == times) {
+                // the number of accepted improvements exceeds times
+                if (numberOfImprovement > times) {
                     return solution.getObjectiveFunctionValue();
                 }
             } else {
-                //  revert pointing back to the representation
+                //  revert the workspace array to the representation
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
@@ -61,11 +62,11 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
                 //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
                 numberOfImprovement++;
-                if (numberOfImprovement == times) {
+                if (numberOfImprovement > times) {
                     return solution.getObjectiveFunctionValue();
                 }
             } else {
-                //  revert pointing back to the representation
+                //  revert the workspace array to the representation
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
