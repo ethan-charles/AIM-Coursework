@@ -28,13 +28,13 @@ public class SR_IE_HH extends HyperHeuristic {
         problem.setDepthOfSearch(0.2);
 
         int h = 1;
-        long iteration = 0;
+        // long iteration = 0;
         boolean accept;
-        System.out.println("Iteration\tf(s)\tf(s')\tAccept");
+        // System.out.println("Iteration\tf(s)\tf(s')\tAccept");
 
         while(!hasTimeExpired()) {
 
-            h = rng.nextInt(problem.getNumberOfHeuristics());
+            h = rng.nextInt(5);
             double candidate = problem.applyHeuristic(h, 0, 1);
 
             accept = candidate <= current;
@@ -48,13 +48,13 @@ public class SR_IE_HH extends HyperHeuristic {
             // iteration++;
         }
 
-        int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
-        List<Location> routeLocations = new ArrayList<>();
-
-        for(int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
-            routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
-        }
-        SolutionPrinter.printSolution(routeLocations);
+        // int[] cities = ((G52AIMTSP) problem).getBestSolution().getSolutionRepresentation().getSolutionRepresentation();
+        // List<Location> routeLocations = new ArrayList<>();
+        //
+        // for(int i = 0; i < ((G52AIMTSP) problem).getBestSolution().getNumberOfCities(); i++) {
+        //     routeLocations.add(((G52AIMTSP) problem).instance.getLocationForCity(cities[i]));
+        // }
+        // SolutionPrinter.printSolution(routeLocations);
     }
 
     @Override

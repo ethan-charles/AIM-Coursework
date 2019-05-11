@@ -30,9 +30,9 @@ public class Parameter_Config_Runner {
         this.SEEDS = config.getSeeds();
         this.RUN_TIME = config.getRunTime();
 
-        this.LIST_LENGTH = new int[]{10, 20,  100, 200};
+        this.LIST_LENGTH = new int[]{20, 30};
         // larger alpha gives more weight to f1
-        this.ALPHA = new int[]{5, 50, 500, 5000, 50000};
+        this.ALPHA = new int[]{10, 30, 50, 80, 120, 500};
     }
 
     public void runTests() {
@@ -50,7 +50,7 @@ public class Parameter_Config_Runner {
                     for (int k = 0; k < ALPHA.length; k++) {
                         for (int run = 0; run < TOTAL_RUNS; run++) {
                             long seed = SEEDS[run];
-                            HyperHeuristic hh = new SMCF_ALA_HH(seed, LIST_LENGTH[i], ALPHA[k]);
+                            HyperHeuristic hh = new SMCF_ALA_HH(seed, LIST_LENGTH[i], ALPHA[k], 50);
                             ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                             problem.loadInstance(instanceID);
                             hh.setTimeLimit(RUN_TIME);

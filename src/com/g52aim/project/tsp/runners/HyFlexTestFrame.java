@@ -12,7 +12,7 @@ public abstract class HyFlexTestFrame {
 	
 	protected final int TOTAL_RUNS = 11;
 	
-	protected final long MILLISECONDS_IN_TEN_MINUTES = 438_000;
+	protected final long MILLISECONDS_IN_TEN_MINUTES = 369_000;
 
 	public HyFlexTestFrame() {
 		

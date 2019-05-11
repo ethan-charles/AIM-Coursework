@@ -39,7 +39,7 @@ public class Test_Runner {
                 int instanceID = INSTANCE_IDs[domain][instance];
                 for (int run = 0; run < TOTAL_RUNS; run++) {
                     long seed = SEEDS[run];
-                    HyperHeuristic hh1 = new SMCF_ALA_HH(seed, 50, 50);
+                    HyperHeuristic hh1 = new SMCF_ALA_HH(seed, 50, 120, 50);
                     ProblemDomain problem = getNewDomain(DOMAINS[domain], seed);
                     problem.loadInstance(instanceID);
                     hh1.setTimeLimit(RUN_TIME);
@@ -72,8 +72,8 @@ public class Test_Runner {
                     average += ofv;
                     sb.append("," + ofv);
                 }
-                sb.append("," + average);
-                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
+                sb.append("," + average / 11.0);
+                config.saveData("G52AIM_HH8" + ".csv", sb.toString());
 
                 // saving 2nd hh
                 sb = new StringBuilder();
@@ -83,8 +83,8 @@ public class Test_Runner {
                     average += ofv;
                     sb.append("," + ofv);
                 }
-                sb.append("," + average);
-                config.saveData("G52AIM_HH1" + ".csv", sb.toString());
+                sb.append("," + average / 11.0);
+                config.saveData("G52AIM_HH8" + ".csv", sb.toString());
             }
         }
     }

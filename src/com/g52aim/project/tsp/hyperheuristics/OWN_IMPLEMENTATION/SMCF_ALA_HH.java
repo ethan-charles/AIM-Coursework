@@ -13,25 +13,26 @@ public class SMCF_ALA_HH extends HyperHeuristic {
 
     private final int LIST_LENGTH;
     private final int ALPHA;
+    // defining
+    private final int STUCK_LIMIT;
 
-    public SMCF_ALA_HH(long seed, int listLength, int alpha) {
+    public SMCF_ALA_HH(long seed, int listLength, int alpha, int stuck_limit) {
         super(seed);
         this.LIST_LENGTH = listLength;
         this.ALPHA = alpha;
+        this.STUCK_LIMIT = stuck_limit;
     }
 
     public SMCF_ALA_HH(long seed, int listLength) {
         // default settings
         super(seed);
         this.LIST_LENGTH = listLength;
-        this.ALPHA = 50;
+        this.ALPHA = 120;
+        this.STUCK_LIMIT = 50;
     }
 
     public void solve(ProblemDomain problem) {
 
-        //  find all heuristics and create all combinations with the IOM and DOS settings
-        //  IOM and DOS settings can be stored as 'HeuristicConfiguration' Objects
-        //  heuristics along with their 'HeuristicConfiguration' and runtime statistics (for the choice function) can be stored as 'Heuristic' Objects
         final int CURRENT_SOLUTION_INDEX = 0;
         final int CANDIDATE_SOLUTION_INDEX = 1;
 
@@ -41,6 +42,7 @@ public class SMCF_ALA_HH extends HyperHeuristic {
 
         double[] strength = new double[]{0, 0.2, 0.4, 0.6, 0.8, 1.0};
 
+        // combination of heuristic with different configuration
         int numberOfVariant = strength.length;
         Heuristic[] heuristicSet = new Heuristic[
                 mutationHeuristicSet.length * numberOfVariant +
@@ -83,7 +85,7 @@ public class SMCF_ALA_HH extends HyperHeuristic {
             // accepting the solution if it is better than the current incumbent solution
             accept = candidate < current;
             if (accept) {
-                // eagerly accepting
+                // try converge as fast as possible
                 scf.setLastImprovement(diff);
                 ala.update(candidate);
                 problem.copySolution(1, 0);
@@ -94,8 +96,8 @@ public class SMCF_ALA_HH extends HyperHeuristic {
                 stuckCounter++;
                 ala.update(current);
                 // stuck means no generate solution that is better than the current incumbent
-                // if stuck more than 20 times, use the ALA
-                if (stuckCounter > 20 && candidate < ala.getThresholdValue()) {
+                // if stuck more than 20 times, deploy the ALA
+                if (stuckCounter > STUCK_LIMIT && candidate < ala.getThresholdValue()) {
                     problem.copySolution(1, 0);
                     current = candidate;
                 }
