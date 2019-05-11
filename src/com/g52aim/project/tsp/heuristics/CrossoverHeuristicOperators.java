@@ -42,8 +42,7 @@ public class CrossoverHeuristicOperators {
             times = 4;
         } else if (strength < 1.0) {
             times = 5;
-        } else {
-            // if strength == 1.0
+        } else if (strength == 1.0){
             times = 6;
         }
         return times;

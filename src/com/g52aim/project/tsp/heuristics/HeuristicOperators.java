@@ -43,7 +43,7 @@ public class HeuristicOperators {
             times = 8;
         } else if (strength < 1.0) {
             times = 16;
-        } else {
+        } else if (strength == 1.0){
             // if strength == 1.0
             times = 32;
         }
@@ -67,8 +67,7 @@ public class HeuristicOperators {
             times = 4;
         } else if (strength < 1.0) {
             times = 5;
-        } else {
-            // if strength == 1.0
+        } else if (strength == 1.0){
             times = 6;
         }
         return times;

@@ -24,32 +24,52 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
         // CHECKED implementation of Next Descent using adjacent swap for the
         int times = getIncrementalTimes(dos);
 
-        for (int counter = 0; counter < times; counter++) {
-            ActualNextDescent(solution);
-        }
-        return solution.getObjectiveFunctionValue();
+        double objectiveFunctionValue = ActualNextDescent(solution, times);
+        return objectiveFunctionValue;
     }
 
 
-    private void ActualNextDescent(TSPSolutionInterface solution) {
+    private double ActualNextDescent(TSPSolutionInterface solution, int times) {
         // CHECKED
 
         int[] solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
-        // have to clone
         int numberOfCities = solution.getNumberOfCities();
-        for (int index = 0; index < numberOfCities; index++) {
-            solutionArray = solutionArray.clone();
+        int startIndex = random.nextInt(numberOfCities);
+        int numberOfImprovement = 0;
 
+        for (int index = startIndex; index < numberOfCities; index++) {
+            solutionArray = solutionArray.clone();
             int nextSwapPoint = ActualAdjacentSwap(solutionArray, index, numberOfCities);
             double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, index, nextSwapPoint);
             if (delta < 0) {
                 //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
+                numberOfImprovement++;
+                if (numberOfImprovement == times) {
+                    return solution.getObjectiveFunctionValue();
+                }
             } else {
                 //  revert pointing back to the representation
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
+        for (int index = 0; index < startIndex; index++) {
+            solutionArray = solutionArray.clone();
+            int nextSwapPoint = ActualAdjacentSwap(solutionArray, index, numberOfCities);
+            double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, index, nextSwapPoint);
+            if (delta < 0) {
+                //  persist the representation if improvement is made
+                solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
+                numberOfImprovement++;
+                if (numberOfImprovement == times) {
+                    return solution.getObjectiveFunctionValue();
+                }
+            } else {
+                //  revert pointing back to the representation
+                solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
+            }
+        }
+        return solution.getObjectiveFunctionValue();
     }
 
     /*
