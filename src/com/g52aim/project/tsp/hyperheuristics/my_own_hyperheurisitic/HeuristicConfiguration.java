@@ -1,4 +1,4 @@
-package com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics;
+package com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitic;
 
 public class HeuristicConfiguration {
 

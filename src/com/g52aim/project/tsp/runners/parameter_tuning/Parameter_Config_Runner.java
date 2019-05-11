@@ -3,7 +3,7 @@ package com.g52aim.project.tsp.runners.parameter_tuning;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import com.g52aim.project.tsp.G52AIMTSP;
-import com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitics.SMCF_ALA_HH;
+import com.g52aim.project.tsp.hyperheuristics.my_own_hyperheurisitic.SMCF_ALA_HH;
 import com.g52aim.project.tsp.runners.TestFrameConfig;
 
 

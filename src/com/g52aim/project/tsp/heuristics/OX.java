@@ -57,7 +57,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         return c.getObjectiveFunctionValue();
     }
 
-    private int[][] ActualOX(int[] p1Array, int[] p2Array, int cutpoint_1, int cutpoint_2) {
+    private static int[][] ActualOX(int[] p1Array, int[] p2Array, int cutpoint_1, int cutpoint_2) {
         int n = p1Array.length;
 
         int numberOfPointsWillStay;
@@ -112,7 +112,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
         //  copy from p1Copy to child2
         //  dont copy if some1[counter] is -1, else retrieve value a[counter]
         int counter = 0;
-        for (int i = 0; i < cutpoint_1; i++) {
+        for (int i = cutpoint_2 + 1; i < n; i++) {
             ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
@@ -121,7 +121,7 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             }
             counter++;
         }
-        for (int i = cutpoint_2 + 1; i < n; i++) {
+        for (int i = 0; i < cutpoint_1; i++) {
             ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
@@ -131,17 +131,9 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             counter++;
         }
 
+
         //  now copy from p2Copy to child1
         counter = 0;
-        for (int i = 0; i < cutpoint_1; i++) {
-            ele = b[counter];
-            if (ele != -1) {
-                child1[i] = ele;
-            } else {
-                i--;
-            }
-            counter++;
-        }
         for (int i = cutpoint_2 + 1; i < n; i++) {
             ele = b[counter];
             if (ele != -1) {
@@ -151,6 +143,16 @@ public class OX extends CrossoverHeuristicOperators implements XOHeuristicInterf
             }
             counter++;
         }
+        for (int i = 0; i < cutpoint_1; i++) {
+            ele = b[counter];
+            if (ele != -1) {
+                child1[i] = ele;
+            } else {
+                i--;
+            }
+            counter++;
+        }
+
 
         return new int[][]{child1, child2};
     }

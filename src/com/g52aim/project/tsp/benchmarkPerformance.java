@@ -56,9 +56,9 @@ public class benchmarkPerformance {
 
 
         //  copy from p1Copy to child2
-        //  don't copy if some1[counter] is -1, else retrieve value a[counter]
+        //  dont copy if some1[counter] is -1, else retrieve value a[counter]
         int counter = 0;
-        for (int i = 0; i < cutpoint_1; i++) {
+        for (int i = cutpoint_2 + 1; i < n; i++) {
             ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
@@ -67,7 +67,7 @@ public class benchmarkPerformance {
             }
             counter++;
         }
-        for (int i = cutpoint_2 + 1; i < n; i++) {
+        for (int i = 0; i < cutpoint_1; i++) {
             ele = a[counter];
             if (ele != -1) {
                 child2[i] = ele;
@@ -77,17 +77,9 @@ public class benchmarkPerformance {
             counter++;
         }
 
+
         //  now copy from p2Copy to child1
         counter = 0;
-        for (int i = 0; i < cutpoint_1; i++) {
-            ele = b[counter];
-            if (ele != -1) {
-                child1[i] = ele;
-            } else {
-                i--;
-            }
-            counter++;
-        }
         for (int i = cutpoint_2 + 1; i < n; i++) {
             ele = b[counter];
             if (ele != -1) {
@@ -97,6 +89,16 @@ public class benchmarkPerformance {
             }
             counter++;
         }
+        for (int i = 0; i < cutpoint_1; i++) {
+            ele = b[counter];
+            if (ele != -1) {
+                child1[i] = ele;
+            } else {
+                i--;
+            }
+            counter++;
+        }
+
 
         return new int[][]{child1, child2};
     }
@@ -113,31 +115,11 @@ public class benchmarkPerformance {
     }
 
     public static void main(String[] args) {
-        // // int[] array1 = new int[]{1, 2, 3, 4};
-        // // int[] array2 = new int[]{4, 2, 3, 1};
-        // //
-        // // int[][] result = ActualOX(array1, array2, 1, 2);
-        //
-        // Random rng = new Random();
-        // long start;
-        // long end;
-        // start = System.nanoTime();
-        // int[] array = new int[10];
-        // for (int i = 0; i < 10; i++) {
-        //     array[i] = i+1;
-        // }
-        // for (int i = array.length - 1; i > 0; i--) {
-        //     int index = rng.nextInt(i + 1);
-        //     // Simple swap
-        //     int a = array[index];
-        //     array[index] = array[i];
-        //     array[i] = a;
-        // }
-        // // int[] array = rng.ints(1, 10 + 1).distinct().limit(10).toArray();
-        // end = System.nanoTime();
-        // System.out.println(end - start);
-        // System.out.println("print");
-        System.out.println(-(-Double.MAX_VALUE));
+        int[] list1 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] list2 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        // int[] list2 = new int[]{4, 5, 2, 1, 8, 7, 6, 9, 3};
+        int[][] result = ActualOX(list1, list2, 3, 6);
+        System.out.println(result);
     }
 
 
