@@ -45,8 +45,8 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
                 //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
                 numberOfImprovement++;
-                // the number of accepted improvements exceeds times
-                if (numberOfImprovement > times) {
+                // the number of accepted improvements == times
+                if (numberOfImprovement == times) {
                     return solution.getObjectiveFunctionValue();
                 }
             } else {
@@ -54,19 +54,18 @@ public class NextDescent extends HeuristicOperators implements HeuristicInterfac
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
+        // continue working from the beginning of array to the start index(exclusive)
         for (int index = 0; index < startIndex; index++) {
             solutionArray = solutionArray.clone();
             int nextSwapPoint = ActualAdjacentSwap(solutionArray, index, numberOfCities);
             double delta = f.computeDeltaAdjSwap(solution.getSolutionRepresentation().getSolutionRepresentation(), solutionArray, index, nextSwapPoint);
             if (delta < 0) {
-                //  persist the representation if improvement is made
                 solution.updateSolutionRepresentationWithDelta(solutionArray, delta);
                 numberOfImprovement++;
-                if (numberOfImprovement > times) {
+                if (numberOfImprovement == times) {
                     return solution.getObjectiveFunctionValue();
                 }
             } else {
-                //  revert the workspace array to the representation
                 solutionArray = solution.getSolutionRepresentation().getSolutionRepresentation();
             }
         }
