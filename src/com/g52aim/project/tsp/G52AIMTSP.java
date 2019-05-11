@@ -22,6 +22,11 @@ public class G52AIMTSP extends ProblemDomain implements Visualisable {
             "d1291", "d18512", "dj38", "usa13509", "qa194", "ch71009"
     };
 
+    // for testing purposes
+    // private String[] instanceFiles = {
+    //         "T81", "pcb1173", "ch71009"
+    // };
+
     private TSPSolutionInterface[] solutions;
 
     private TSPSolutionInterface bestSolution;
